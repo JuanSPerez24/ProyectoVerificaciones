@@ -1,5 +1,5 @@
 //Obtener codigos en verificación
-# GET http://localhost:3000/api/CodigosVerificaciones
+GET http://localhost:3000/api/CodigosVerificaciones
 
 # //Obtener tipologias
 # GET http://localhost:3000/api/Tipologias
