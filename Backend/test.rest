@@ -1,0 +1,101 @@
+//Obtener codigos en verificación
+# GET http://localhost:3000/api/CodigosVerificaciones
+
+# //Obtener tipologias
+# GET http://localhost:3000/api/Tipologias
+
+# //Tramite realizado tercera etapa
+# GET http://localhost:3000/api/Tramites
+
+# //Obtener tramite realizado
+# GET http://localhost:3000/api/Tramites
+
+# //Obtener puntos de atencion
+# GET http://localhost:3000/api/PutnosDeAtencion
+
+# //Obtener tipos de documento
+# GET http://localhost:3000/api/TipoDeDocumento
+
+# //Obtener los datos de los usuarios
+# GET http://localhost:3000/api/verificaciones/informador
+
+
+//Crear un nuevo informador
+# POST http://localhost:3000/api/informador
+# Content-Type: application/json
+
+# {
+#     "NombreInformador": "Marcela Sinisterra",
+#     "Correo": "msinisterra@example.com",
+#     "password": "S1998Sinisterra",
+#     "Rol": "Informador",
+#     "TipoDocumentoId": 2,
+#     "NumeroDocumento": "1004567834"
+# }
+
+//Modificar Informador
+# PUT http://localhost:3000/api/ModInformador
+# Content-Type: application/json
+
+# {
+#     "IdInformador": 11,
+#     "Correo": "modificacionLinda@gmail.com",
+#     "password": "LGomez"
+# } 
+
+
+//Crear una solicitud (Registrar primera etapa)
+# POST http://localhost:3000/api/verificaciones/solicitudes
+# Content-Type: application/json
+
+# {
+#   "FechaPrimeraEtapa": "2025-10-26",
+#   "Ficha": "12345678900987654321",
+#   "informadorPrimeraEtapaId": 11,
+#   "PuntoAtencionId": 13,
+#   "VerificacionId": 26,
+#   "DescripcionPrimerEtapa": "Ejemplo",
+#   "TipoDocumentoId": 1,
+#   "NumeroDocumentoSolicitante": "1032563457",
+#   "Correo": "experez@ej.com",
+#   "Celular": "3456783426",
+#   "Hogar": 1,
+#   "Orden": 2,
+#   "Tipologias": [1]
+# }
+
+//Registrar segunda etapa
+# PUT http://localhost:3000/api/Verificaciones/SegundaEtapa
+# Content-Type: application/json
+
+# {
+#   "IdSolicitud": 37,
+#   "FechaSegundaEtapa": "2025-10-31",
+#   "Levantamiento": 2,
+#   "DescripcionSegundaEtapa": "Validación final completada sin observaciones."
+# }
+
+//Rregistrar terceraetapa
+# PUT http://localhost:3000/api/verificaciones/TerceraEtapa
+# Content-Type: application/json
+
+# {
+#   "IdSolicitud": 37,
+#   "FechaTerceraEtapa": "2025-11-04",
+#   "DocumentosEnPunto": 1,
+#   "TramiteId": 1,
+#   "InformadorTerceraEtapaId": 3,
+#   "IdRespuesta": 123456,
+#   "FichaTerceraEtapa": "1234567890987654321",
+#   "DescripcionTerceraEtapa": "Tramite realizado",
+#   "TipoDocumentoId": 1,
+#   "NumeroDocumentoSolicitante": "10101010",
+#   "Correo": "",
+#   "Celular": "3001234567",
+#   "Hogar": 1,
+#   "Orden": 2
+# }
+
+//Consulta por ficha
+### Buscar por estado
+# GET http://localhost:3000/api/Busqueda?estado=3&texto=super
