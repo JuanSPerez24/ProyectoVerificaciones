@@ -54,10 +54,12 @@
             <label for="SelectEstadoBuscar" class="form-label text-white">Estado:</label>
             <div class="input-group mb-3">
               <select name="" id="SelectEstadoBuscar" class="form-select">
-                <option value="">Pendiente</option>
+                <option value="1">Pendiente</option>
+                <option value="2">Respondida</option>
+                <option value="3">Realizada</option>
               </select>
-              <input type="text" class="form-control- w-50" aria-label="" placeholder="Texto busqueda" />
-              <button class="btn btn-outline-danger tw-semibold">
+              <input type="text" id="TextoBusqueda" class="form-control- w-50" aria-label="" placeholder="Texto busqueda" />
+              <button id="ButtonBuscar" class="btn btn-outline-danger tw-semibold">
                 Buscar
               </button>
             </div>
@@ -81,43 +83,8 @@
                 <th class="col table-info">ID</th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <td>Fecha</td>
-                <td>Ficha</td>
-                <td>Punto</td>
-                <td>Observación</td>
-                <td>Fecha</td>
-                <td>Observación</td>
-                <td>Fecha</td>
-                <td>Documentos</td>
-                <td>Trámite</td>
-                <td>ID</td>
-              </tr>
-              <tr>
-                <td>Fecha</td>
-                <td>Ficha</td>
-                <td>Punto</td>
-                <td>Observación</td>
-                <td>Fecha</td>
-                <td>Observación</td>
-                <td>Fecha</td>
-                <td>Documentos</td>
-                <td>Trámite</td>
-                <td>ID</td>
-              </tr>
-              <tr>
-                <td>Fecha</td>
-                <td>Ficha</td>
-                <td>Punto</td>
-                <td>Observación</td>
-                <td>Fecha</td>
-                <td>Observación</td>
-                <td>Fecha</td>
-                <td>Documentos</td>
-                <td>Trámite</td>
-                <td>ID</td>
-              </tr>
+            <tbody id="CuerpoTablaBuscar">
+              <!-- Aquí se llenarán los datos dinámicamente -->
             </tbody>
           </table>
         </div>
@@ -127,7 +94,7 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
     crossorigin="anonymous"></script>
-  <script src="/Frontend/JS/Acciones.js"></script>
+  <script src="/Frontend/JS/BusquedaPorTextoYEstado.js"></script>
 </body>
 
 </html>

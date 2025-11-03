@@ -55,7 +55,6 @@ let ArrarHabilitar = [];
 
 //Llenar informador con el usuario logeado
 const usuario = JSON.parse(localStorage.getItem("usuario"));
-
 Informador.textContent = String(usuario.id);
 Informador.disabled = true;
 InformadorTerceraEtapa.textContent = String(usuario.id);
