@@ -183,11 +183,12 @@ router.put("/verificaciones/TerceraEtapa", (req, res) => {
     if (
         !FechaTerceraEtapa || !DocumentosEnPunto || !TramiteId || !InformadorTerceraEtapaId ||
         !IdRespuesta || !FichaTerceraEtapa || !DescripcionTerceraEtapa ||
-        !TipoDocumentoId || !NumeroDocumentoSolicitante || !Celular || !Hogar || !Orden || !IdSolicitud
+        !TipoDocumentoId || !NumeroDocumentoSolicitante || !Hogar || !Orden || !IdSolicitud
     )
         return res.status(400).json({ error: "Faltan campos obligatorios de la tercera etapa" });
 
     const CorreoFinal = Correo && Correo.trim() !== "" ? Correo : null;
+    const CelularFinal = Celular && Celular.trim() !== "" ? Celular : null;
 
     db.beginTransaction((err) => {
         if (err) return res.status(500).json({ error: "Error al iniciar la transacción" });
@@ -198,7 +199,7 @@ router.put("/verificaciones/TerceraEtapa", (req, res) => {
             ON DUPLICATE KEY UPDATE IdSolicitante = LAST_INSERT_ID(IdSolicitante)
         `;
 
-        db.query(sqlSolicitante, [TipoDocumentoId, NumeroDocumentoSolicitante, CorreoFinal, Celular, Hogar, Orden], (err, resSolicitante) => {
+        db.query(sqlSolicitante, [TipoDocumentoId, NumeroDocumentoSolicitante, CorreoFinal, CelularFinal, Hogar, Orden], (err, resSolicitante) => {
             if (err) {
                 return db.rollback(() => {
                     res.status(500).json({ error: "Error en la cosulta o inserción de ddatos del solictante" });

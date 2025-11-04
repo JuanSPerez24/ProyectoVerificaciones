@@ -21,21 +21,22 @@
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="/Frontend/HTML/RegistroYconsulta.html">
-              Nuevo registro
-            </a>
+                Nuevo registro</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="/Frontend/HTML/Buscar.html">
-              Busqueda
+                Busqueda
             </a>
+          </li>
           <li class="nav-item">
-            <a class="nav-link" href="/Frontend/HTML/Usuarios.html">
+            <a class="nav-link" href="/Frontend/HTML/Usuarios.html" id="VerUsuariosUsuarios">
               Usuarios
             </a>
           </li>
-          </li>
         </ul>
-        <button class="navbar-text" id="ButtonCerrarSesion"> Cerrar sesión </button>
+        <a class="navbar-text" id="ButtonCerrarSesion" href="">
+            Cerrar sesión
+        </a>
       </div>
       <h1 class="position-absolute start-50 translate-middle-x fw-semibold fs-2 m-0 d-none d-lg-block"
         style="z-index: 1">
@@ -66,8 +67,7 @@
                 <option value="2">Respondida</option>
                 <option value="3">Realizada</option>
               </select>
-              <input type="text" id="TextoBusqueda" class="form-control- w-50" aria-label=""
-                placeholder="Texto busqueda" />
+              <input type="text" id="TextoBusqueda" class="form-control- w-50" aria-label="" placeholder="Texto busqueda" />
               <button id="ButtonBuscar" class="btn btn-outline-danger tw-semibold">
                 Buscar
               </button>

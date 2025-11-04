@@ -98,12 +98,12 @@
 
 //Consulta por ficha
 ### Buscar por estado
-GET http://localhost:3000/api/Busqueda?estado=3&texto=
+# GET http://localhost:3000/api/Busqueda?estado=3&texto=
 
 //Busqueda ficha
-# POST http://localhost:3000/api/verificaciones
-# Content-Type: application/json
+POST http://localhost:3000/api/verificaciones
+Content-Type: application/json
 
-# {
-#     "Ficha": "12345678900987654321"
-# }
+{
+    "Ficha": "12345678900987654321"
+}

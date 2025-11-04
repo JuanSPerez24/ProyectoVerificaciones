@@ -18,13 +18,22 @@
             <div class="collapse navbar-collapse" id="navbarText">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/Frontend/HTML/RegistroYconsulta.html">Nuevoregistro</a>
+                        <a class="nav-link active" aria-current="page" href="/Frontend/HTML/RegistroYconsulta.html">
+                            Nuevo registro
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/Frontend/HTML/Buscar.html">Busqueda</a>
+                        <a class="nav-link" href="/Frontend/HTML/Buscar.html">
+                            Busqueda
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Frontend/HTML/Usuarios.html">
+                            Usuarios
+                        </a>
                     </li>
                 </ul>
-                <button class="navbar-text" id="ButtonCerrarSesion"> Cerrar sesión </button>
+                <a class="navbar-text" id="ButtonCerrarSesion" href=""> Cerrar sesión </a>
             </div>
             <h1 class="position-absolute start-50 translate-middle-x fw-semibold fs-2 m-0 d-none d-lg-block"
                 style="z-index: 1">
@@ -271,7 +280,7 @@
                         <div class="card bg-dark text-white bg-opacity-80 rounded-3 mx-1 my-3">
                             <div class="row m-2">
                                 <div class="col d-flex justify-content-center">
-                                    <button class="btn btn-success" id="ButtonRegistrarPrimeraEtapa">Guardar solicitud</button>
+                                    <button class="btn btn-success" id="ButtonRegistrarPrimeraEtapa" disabled>Guardar solicitud</button>
                                 </div>
                             </div>
                         </div>
@@ -306,7 +315,7 @@
                             </div>
                             <!--FechaSegundaEtapa-->
                             <div class="col m-3">
-                                <label for="FechaSegundaEtapa" class="form-labels">Fecha:</label>
+                                <label for="InputFechaSegundaEtapa" class="form-labels">Fecha:</label>
                                 <input id="InputFechaSegundaEtapa" type="date" class="form-control" disabled/>
                             </div>
                         </div>
@@ -318,7 +327,7 @@
                         <div class="row">
                             <!--RespuestaLevantamiento, FechaSegundaEtapa-->
                             <div class="col m-3">
-                                <label for="RespuestaLevantamiento" class="form-label mb-0">¿Se realiza el
+                                <label for="InputDescripcionSegundaEtapa" class="form-label mb-0">¿Se realiza el
                                     levantamiento?:</label>
                                 <textarea name="" id="InputDescripcionSegundaEtapa" class="form-control"
                                     placeholder="OBSERVACIÓN SI PROCEDE O NO EL TRÁMITE SOLICITADO EN LA PRIMERA ETAPA"></textarea>
@@ -486,7 +495,7 @@
                         <div class="card bg-dark text-white bg-opacity-80 rounded-3 mx-1 my-3">
                             <div class="row m-2">
                                 <div class="col d-flex justify-content-center">
-                                    <button class="btn btn-info fw-semibold" id="ButtonRegistrarTerceraEtapa">Registrar etapa</button>
+                                    <button class="btn btn-info fw-semibold" id="ButtonRegistrarTerceraEtapa" disabled>Registrar etapa</button>
                                 </div>
                             </div>
                         </div>

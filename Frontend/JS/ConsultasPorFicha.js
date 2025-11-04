@@ -46,12 +46,13 @@ const TerceraEtapa = document.getElementById("RadioTerceraEtapa");
 //Constantes campos primera seguna y tercera etapa
 const CamposPrimeraEtapa = [Fecha, Hogar, Orden, TipoDocumento, NumeroDocumento, Celular, Correo, Informador, PuntoAtencion, Codigo, SelectTipologia1, SelectTipologia2, SelectTipologia3, DescripcionPrimeraEtapa];
 const CamposSegundaEtapa = [levantamiento, FechaSegundaEtapa, DescripcionSegundaEtapa];
-const CamposTerceraEtapa = [DocumentosEnPunto, FechaTerceraEtapa, TramiteRealizado, InformadorTerceraEtapa, IdRespuesta, FichaTerceraEtapa, HogarTerceraEtapa, OrdenTerceraEtapa, TipoDocumentoTerceraEtapa, NumeroDocumentoTerceraEtapa, DescripcionTerceraEtapa];
+const CamposTerceraEtapa = [DocumentosEnPunto, FechaTerceraEtapa, TramiteRealizado, IdRespuesta, FichaTerceraEtapa, HogarTerceraEtapa, OrdenTerceraEtapa, TipoDocumentoTerceraEtapa, NumeroDocumentoTerceraEtapa, DescripcionTerceraEtapa];
 
 //Variables
 let LLenarDatos = [];
 let ArrayDeshabilitar = [];
 let ArrarHabilitar = [];
+let IdSolicitud = null;
 
 //Llenar informador con el usuario logeado
 const usuario = JSON.parse(localStorage.getItem("usuario"));
@@ -97,6 +98,10 @@ ButtonConsultar.addEventListener("click", async (e) => {
 
         const registro = Array.isArray(data) ? data[0] : data;
 
+        IdSolicitud = registro.IdSolicitud;
+        console.log("Solicitud encontrada:", IdSolicitud);
+
+        //Valores para llenar los campos
         const ValoresPrimeraEtapa = [registro.FechaPrimeraEtapa, registro.Hogar, registro.Orden, registro.TipoDocumentoId, registro.NumeroDocumento, registro.Celular, registro.Correo, registro.InformadorPrimeraEtapaId, registro.PuntoAtencionId, registro.VerificacionId, registro.id_tp1, registro.id_tp2, registro.id_tp3, registro.DescripcionPrimerEtapa];
         const ValoresSegundaEtapa = [registro.Levantamiento, registro.FechaSegundaEtapa, registro.DescripcionSegundaEtapa];
         const ValoresTerceraEtapa = [registro.DocumentosEnPunto, registro.FechaTerceraEtapa, registro.TramiteId, registro.InformadorTerceraEtapaId, registro.IdRespuesta, registro.FichaTerceraEtapa, registro.HogarTercera, registro.OrdenTercera, registro.TipoDocumentoIdTercera, registro.NumeroDocumentoTercera, registro.DescripcionTerceraEtapa];
@@ -158,7 +163,7 @@ ButtonConsultar.addEventListener("click", async (e) => {
 
             LLenarDatos = [CamposTerceraEtapa, ValoresTerceraEtapa];
             LlenarCampos(LLenarDatos);
-            
+
             ArrayDeshabilitar.push(CamposPrimeraEtapa, CamposSegundaEtapa, CamposTerceraEtapa, Ficha, ButtonRegistrarPrimeraEtapa, ButtonRegistrarTerceraEtapa);
             DeshabilitarCampos(ArrayDeshabilitar);
             ArrarHabilitar.push(PrimeraEtapa, SegundaEtapa, TerceraEtapa);
@@ -222,3 +227,100 @@ function HabilitarCampos(ArrayCampos = []) {
     ArrayDeshabilitar = [];
 }
 
+//Creacion Solicitud Primera Etapa
+ButtonRegistrarPrimeraEtapa.addEventListener("click", async (e) => {
+    e.preventDefault();
+    //Validacion campos obligatorios
+    for (let i = 0; i < CamposPrimeraEtapa.length; i++) {
+        if (!CamposPrimeraEtapa[i].value) {
+            alert("Por favor complete todos los campos obligatorios de la primera etapa.");
+            return;
+        }
+    }
+
+    //Construccion del objeto de datos
+    const datosPrimeraEtapa = {
+        FechaPrimeraEtapa: Fecha.value,
+        Ficha: Ficha.value.trim(),
+        informadorPrimeraEtapaId: Informador.value,
+        PuntoAtencionId: PuntoAtencion.value,
+        VerificacionId: Codigo.value,
+        DescripcionPrimerEtapa: DescripcionPrimeraEtapa.value.trim(),
+        TipoDocumentoId: TipoDocumento.value,
+        NumeroDocumentoSolicitante: NumeroDocumento.value.trim(),
+        Correo: Correo.value.trim(),
+        Celular: Celular.value.trim(),
+        Hogar: Hogar.value,
+        Orden: Orden.value,
+        Tipologias: [SelectTipologia1.value, SelectTipologia2.value, SelectTipologia3.value].filter(t => t)
+    };
+
+    try {
+        const respuesta = await fetch("http://localhost:3000/api/verificaciones/solicitudes", {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(datosPrimeraEtapa)
+        });
+        if (respuesta.ok) {
+            alert("Primera etapa registrada con éxito.");
+
+            ArrayDeshabilitar.push(CamposPrimeraEtapa, Ficha, ButtonRegistrarPrimeraEtapa, SegundaEtapa, TerceraEtapa);
+            DeshabilitarCampos(ArrayDeshabilitar);
+
+            return;
+        } else {
+            alert("Error al registrar la primera etapa.");
+        }
+    } catch (error) {
+        console.error("Error al registrar la primera etapa:", error);
+        alert("No se pudo conectar con el servidor.");
+    }
+});
+
+//Registro Tercera Etapa
+ButtonRegistrarTerceraEtapa.addEventListener("click", async (e) => {
+    e.preventDefault();
+    //Validacion campos obligatorios
+    for (let i = 0; i < CamposTerceraEtapa.length; i++) {
+        if (!CamposTerceraEtapa[i].value) {
+            alert("Por favor complete todos los campos obligatorios de la tercera etapa.");
+            return;
+        }
+    }
+
+    const datosTerceraEtapa = {
+        IdSolicitud: IdSolicitud,
+        FechaTerceraEtapa: FechaTerceraEtapa.value.trim(),
+        DocumentosEnPunto: DocumentosEnPunto.value,
+        TramiteId: TramiteRealizado.value,
+        InformadorTerceraEtapaId: InformadorTerceraEtapa.value,
+        IdRespuesta: IdRespuesta.value.trim(),
+        FichaTerceraEtapa: FichaTerceraEtapa.value.trim(),
+        DescripcionTerceraEtapa: DescripcionTerceraEtapa.value.trim(),
+        TipoDocumentoId: TipoDocumentoTerceraEtapa.value,
+        NumeroDocumentoSolicitante: NumeroDocumentoTerceraEtapa.value.trim(),
+        Hogar: HogarTerceraEtapa.value,
+        Orden: OrdenTerceraEtapa.value
+    };
+    try {
+        const respuesta = await fetch("http://localhost:3000/api/verificaciones/TerceraEtapa", {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(datosTerceraEtapa)
+        });
+        if (respuesta.ok) {
+            alert("Tercera etapa registrada con éxito.");
+            ArrayDeshabilitar.push(CamposTerceraEtapa, ButtonRegistrarTerceraEtapa);
+            DeshabilitarCampos(ArrayDeshabilitar);
+            IdSolicitud = null;
+            return;
+        } else {
+            alert("Error al registrar la tercera etapa.");
+        }
+
+        IdSolicitud = null;
+    } catch (error) {
+        console.error("Error al registrar la tercera etapa:", error);
+        alert("No se pudo conectar con el servidor.");
+    }
+});

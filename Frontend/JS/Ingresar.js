@@ -25,6 +25,7 @@ BotonLogin.addEventListener("click", async (e) => {
     console.error("Error en la conexión:", error);
     alert("No se pudo conectar con el servidor");
   }
+  
 });
 
 
