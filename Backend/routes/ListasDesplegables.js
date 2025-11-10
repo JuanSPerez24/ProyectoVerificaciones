@@ -43,4 +43,13 @@ router.get("/TipoDeDocumento", (err, res) => {
     });
 });
 
+//Obtener Roles
+router.get("/Roles", (req, res) => {
+    db.query("SELECT * FROM roles", (err, resultado) => {
+        if (err) return res.status(500).json({ error: "Error en la consulta de Roles" });
+        res.json(resultado);
+    });
+});
+
+
 export default router;

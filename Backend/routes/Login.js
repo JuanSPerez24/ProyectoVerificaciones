@@ -9,7 +9,7 @@ router.post("/Login", (req, res) => {
     if (!Correo || !password) return res.status(400).json({ error: "Faltan campos" });
 
     const sqlBusqueda = `
-    SELECT IdInformador, rol, NombreInformador FROM informador 
+    SELECT IdInformador, RolId, NombreInformador FROM informador 
     WHERE Correo = ? AND password = ?
     `;
 
@@ -23,7 +23,7 @@ router.post("/Login", (req, res) => {
         res.json({
             mensaje: "OK",
             id: user.IdInformador, 
-            Rol: user.rol, 
+            Rol: user.RolId, 
             Name: user.NombreInformador
         });
     });

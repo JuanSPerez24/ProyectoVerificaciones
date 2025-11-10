@@ -9,7 +9,7 @@
     integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous" />
 </head>
 
-<body>
+<body id="BodyUsuarios">
   <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid shadow p-3 mb-2 bg-body-tertiary rounded justify-content-center">
       <a class="navbar-brand" href="/Frontend/HTML/RegistroYconsulta.html">Logo</a>
@@ -18,25 +18,19 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarText">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0" id="ListaPantallas">
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="/Frontend/HTML/RegistroYconsulta.html">
-                Nuevo registro</a>
+              Nuevo registro
+            </a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="/Frontend/HTML/Buscar.html">
-                Busqueda
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/Frontend/HTML/Usuarios.html" id="VerUsuariosUsuarios">
-              Usuarios
+              Busqueda
             </a>
           </li>
         </ul>
-        <a class="navbar-text" id="ButtonCerrarSesion" href="">
-            Cerrar sesión
-        </a>
+        <button class="navbar-text" id="ButtonCerrarSesion"> Cerrar sesión </button>
       </div>
       <h1 class="position-absolute start-50 translate-middle-x fw-semibold fs-2 m-0 d-none d-lg-block"
         style="z-index: 1">
@@ -51,23 +45,19 @@
     <!--Titulo Buscar-->
     <section>
       <div class="card bg-dark bg-opacity-25 rounded-4">
-        <div class="bg-danger rounded-4 my-3 d-flex justify-content-center">
-          <label for="" class="form-label text-white m-2 fs-3 fw-semibold">Buscar</label>
+        <div class="bg-primary rounded-4 my-3 d-flex justify-content-center">
+          <label for="" class="form-label text-white m-2 fs-3 fw-semibold">Usuarios</label>
         </div>
       </div>
     </section>
     <section>
       <div class="card bg-dark bg-opacity-25 rounded-4 m-2">
         <div class="bg-dark bg-opacity-80 rounded-4 m-3 d-flex justify-content-center">
-          <div class="w-100 mx-3">
-            <label for="SelectEstadoBuscar" class="form-label text-white">Estado:</label>
+          <div class="w-50 mx-3 rounded d-flex flex-column">
+            <label for="SelectEstadoBuscar" class="form-label text-white"></label>
             <div class="input-group mb-3">
-              <select name="" id="SelectEstadoBuscar" class="form-select">
-                <option value="1">Pendiente</option>
-                <option value="2">Respondida</option>
-                <option value="3">Realizada</option>
-              </select>
-              <input type="text" id="TextoBusqueda" class="form-control- w-50" aria-label="" placeholder="Texto busqueda" />
+              <input type="text" id="TextoBusqueda" class="form-control w-50" aria-label=""
+                placeholder="Texto busqueda" />
               <button id="ButtonBuscar" class="btn btn-outline-danger tw-semibold">
                 Buscar
               </button>
@@ -80,19 +70,18 @@
           <table class="table table-striped m-3">
             <thead>
               <tr>
-                <th class="col table-success">Fecha</th>
-                <th class="col table-success">Ficha</th>
-                <th class="col table-success">Punto</th>
-                <th class="col table-success">Observación</th>
-                <th class="col table-warning">Fecha</th>
-                <th class="col table-warning">Observación</th>
-                <th class="col table-info">Fecha</th>
-                <th class="col table-info">Documentos</th>
-                <th class="col table-info">Trámite</th>
-                <th class="col table-info">ID</th>
+                <th class="col">Nombre</th>
+                <th class="col">Correo</th>
+                <th class="col">Rol</th>
+                <th class="col">Tipo Documento</th>
+                <th class="col">Numero documento</th>
+                <th class="col">
+                  Acciones
+                  <button class="btn btn-outline-danger" id="ButtonRegistroNuevoUsuario">Nuevo usuario</button>
+                </th>
               </tr>
             </thead>
-            <tbody id="CuerpoTablaBuscar">
+            <tbody id="CuerpoTablaUsuarios">
               <!-- Aquí se llenarán los datos dinámicamente -->
             </tbody>
           </table>
@@ -103,7 +92,8 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
     crossorigin="anonymous"></script>
-  <script src="/Frontend/JS/BusquedaPorTextoYEstado.js"></script>
+  <script src="/Frontend/JS/VerificacionRol.js"></script>
+  <script src="/Frontend/JS/UsuarioCreacionModificacion.js"></script>
 </body>
 
 </html>

@@ -4,38 +4,49 @@ import db from "../db.js";
 const router = express.Router();
 
 //Crear un nuevo usuario
-router.post("/informador", (req, res) => {
-    const { NombreInformador, Correo, password, Rol, TipoDocumentoId, NumeroDocumento } = req.body;
+router.post("/Usuario/Nuevo", (req, res) => {
+    const { NombreInformador,Correo,password,IdTipoDocumento,NumeroDocumento,IdRol } = req.body;
 
-    if (!NombreInformador || !Correo || !password || !Rol || !TipoDocumentoId || !NumeroDocumento) {
+    if (!NombreInformador || !Correo || !password || !IdTipoDocumento || !NumeroDocumento || !IdRol) {
         return res.status(400).json({ error: "Faltan campos requeridos" })
     }
-    db.query("INSERT INTO informador (NombreInformador, Correo, password, Rol, TipoDocumentoId, NumeroDocumento) VALUES (? ,? , ?, ?, ?, ?)",
-        [NombreInformador, Correo, password, Rol, TipoDocumentoId, NumeroDocumento],
+
+
+    const sqlDatosinformador =`
+    INSERT INTO informador 
+        (NombreInformador, Correo, password, TipoDocumentoId, NumeroDocumento, RolId) 
+    VALUES 
+        (? ,? , ?, ?, ?, ?)
+    `;
+    db.query(sqlDatosinformador,[NombreInformador,Correo,password,IdTipoDocumento,NumeroDocumento,IdRol],
         (err, resultado) => {
             if (err) return res.status(500).json({ error: "Error en la inserción de datos del informador" });
 
-            res.json({ id: resultado.insertId, NombreInformador, Correo, Rol, TipoDocumentoId, NumeroDocumento })
+            res.json({mensaje: "Usuario creado con éxito."});
         }
     );
 });
 
 //Modificar un usuario
-router.put("/ModInformador", (req, res) => {
+router.put("/Usuario/Mod", (req, res) => {
     const {
-        IdInformador,
-        Correo, password
+        NombreInformador, Correo, RolId, TipoDocumentoId, NumeroDocumento, IdInformador
     } = req.body;
-
-    if (!IdInformador || !Correo || !password) return res.status(500).json({ error: "Faltan campos obligatorios" });
+    if (!NombreInformador || !Correo || !RolId || !TipoDocumentoId || !NumeroDocumento || !IdInformador) return res.status(500).json({ error: "Faltan campos obligatorios" });
 
     const sqlInformador = `
         UPDATE informador
-        SET Correo = ?, password = ?
-        WHERE IdInformador = ?
+        SET
+            NombreInformador = ?,
+            Correo = ?,
+            RolId = ?,
+            TipoDocumentoId = ?,
+            NumeroDocumento = ?
+        WHERE
+            IdInformador = ?;
     `;
 
-    db.query(sqlInformador, [Correo, password, IdInformador], (err, resultado) => {
+    db.query(sqlInformador, [NombreInformador, Correo, RolId, TipoDocumentoId, NumeroDocumento, IdInformador], (err, resultado) => {
         if (err) return res.status(500).json({ error: "Erro en la actualizacion de datos del informador" });
 
         if (resultado.affectedRows == 0) return res.status(500).json({ error: "ID usuario no encontrado" });
@@ -43,18 +54,52 @@ router.put("/ModInformador", (req, res) => {
         res.json({
             mensaje: "Informador actualizdo",
             InformadorActualizado: {
-                IdInformador,
+                NombreInformador,
                 Correo,
-                password
+                RolId,
+                TipoDocumentoId,
+                NumeroDocumento,
+                IdInformador
             }
-
-        })
+        });
     });
 });
 
+router.put("/Usuario/ModPass", (req, res) => {
+    const { IdInformador, NuevaContraseña } = req.body;
+
+    if (!NuevaContraseña || !IdInformador) return res.status(500).json({ error: "Faltan campos obligatorios" });
+
+    const sqlInformador = `
+        UPDATE  informador 
+        SET 
+            password = ?
+        WHERE 
+            IdInformador = ?
+    `;
+
+    db.query(sqlInformador, [NuevaContraseña, IdInformador], (err, resultado) =>{
+        if (err) return res.status(500).json({error: "Error en al actualizacion de la contraseña."});
+
+        if(resultado.affectedRows == 0) return res.status(500).json({error: "ID usuarios no entrado"});
+
+        res.json({
+            mensaje: "Contraseña cambiada con éxito"
+        });
+
+    });
+
+});
+
 //Obtener datos de los usuarios
-router.get("/verificaciones/informador", (req, res) => {
-    db.query("SELECT * FROM informador;", (err, resultados) => {
+router.get("/Usuarios", (req, res) => {
+    const sqlInformador = `
+        SELECT IdInformador,NombreInformador, Correo, NombreRol , SiglaTipoDocumento, NumeroDocumento, RolId, TipoDocumentoId FROM informador i
+        INNER JOIN tiposdocumento on IdTipoDocumento = TipoDocumentoId
+        INNER JOIN roles r on i.RolId = r.IdRol
+        ;
+    `;
+    db.query(sqlInformador, (err, resultados) => {
         if (err) return res.status(500).json({ error: "Error en la base de datos" });
         res.json(resultados);
     })

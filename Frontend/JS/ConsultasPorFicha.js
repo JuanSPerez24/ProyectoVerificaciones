@@ -54,6 +54,10 @@ let ArrayDeshabilitar = [];
 let ArrarHabilitar = [];
 let IdSolicitud = null;
 
+//Llenar selects de informadores
+LlenarSelect("http://localhost:3000/api/Usuarios", Informador, "IdInformador", "NombreInformador", "Seleccione Iinformador")
+LlenarSelect("http://localhost:3000/api/Usuarios", InformadorTerceraEtapa, "IdInformador", "NombreInformador", "Seleccione Iinformador")
+
 //Llenar informador con el usuario logeado
 const usuario = JSON.parse(localStorage.getItem("usuario"));
 Informador.textContent = String(usuario.id);
@@ -322,5 +326,45 @@ ButtonRegistrarTerceraEtapa.addEventListener("click", async (e) => {
     } catch (error) {
         console.error("Error al registrar la tercera etapa:", error);
         alert("No se pudo conectar con el servidor.");
+        IdSolicitud = null;
     }
 });
+
+//Llenar selects
+async function LlenarSelect(url, select, campoValor, campoTexto, TextoInicial) {
+
+    select.innerHTML = `<option value ="">${TextoInicial}`;
+
+    try {
+        const res = await fetch(url);
+        const data = await res.json();
+
+        data.forEach(item => {
+            const option = document.createElement("option");
+            option.value = item[campoValor];
+            option.textContent = item[campoTexto];
+            select.appendChild(option);
+        });
+    } catch (error) {
+        console.log(`Error al cargar${select}`, error);
+    };
+};
+
+//Lenar selects de Tipos de documento
+LlenarSelect("http://localhost:3000/api/TipoDeDocumento", TipoDocumento, "IdTipoDocumento", "SiglaTipoDocumento", "Seleccione tipo documento")
+LlenarSelect("http://localhost:3000/api/TipoDeDocumento", TipoDocumentoTerceraEtapa, "IdTipoDocumento", "SiglaTipoDocumento", "Seleccione tipo documento")
+
+//Llenar selects de puntsod e atencion
+LlenarSelect("http://localhost:3000/api/PuntosDeAtencion", PuntoAtencion, "IdPuntoAtencion", "NombrePuntoAtencion", "Seleccione punto atención")
+
+//Lenar selects de codigos verificaciones
+LlenarSelect("http://localhost:3000/api/CodigosVerificaciones", Codigo, "IdVerificaciones", "DescripcionVerificacion", "Seleccione verificación")
+
+//Llenar selects de tramite de tercera etapa
+LlenarSelect("http://localhost:3000/api/Tramites", TramiteRealizado, "IdTramite", "NombreTramite", "Seleccione tramite realizado")
+
+//Lenar selects de tipologias
+LlenarSelect("http://localhost:3000/api/Tipologias", SelectTipologia1, "IdTipologia", "NombreTramite", "Seleccione tipologia 1")
+LlenarSelect("http://localhost:3000/api/Tipologias", SelectTipologia2, "IdTipologia", "NombreTramite", "Seleccione tipologia 2")
+LlenarSelect("http://localhost:3000/api/Tipologias", SelectTipologia3, "IdTipologia", "NombreTramite", "Seleccione tipologia 3")
+

@@ -17,30 +17,30 @@
 # GET http://localhost:3000/api/TipoDeDocumento
 
 # //Obtener los datos de los usuarios
-# GET http://localhost:3000/api/verificaciones/informador
+# GET http://localhost:3000/api/Usuarios
 
 
 //Crear un nuevo informador
-# POST http://localhost:3000/api/informador
-# Content-Type: application/json
+POST http://localhost:3000/api/Usuario/Nuevo
+Content-Type: application/json
 
-# {
-#     "NombreInformador": "Marcela Sinisterra",
-#     "Correo": "msinisterra@example.com",
-#     "password": "S1998Sinisterra",
-#     "Rol": "Informador",
-#     "TipoDocumentoId": 2,
-#     "NumeroDocumento": "1004567834"
-# }
+{
+    "NombreInformador": "Daniel Rojas",
+    "Correo": "daniel.r@gmail.com",
+    "password": "oracle",
+    "IdTipoDocumento": 2,
+    "NumeroDocumento": "132345768",
+    "IdRol": 1
+}
 
 //Modificar Informador
-# PUT http://localhost:3000/api/ModInformador
+# PUT http://localhost:3000/api/Usuario/Mod
 # Content-Type: application/json
 
 # {
 #     "IdInformador": 11,
 #     "Correo": "modificacionLinda@gmail.com",
-#     "password": "LGomez"
+#     "NumeroDocumento": "1234567890"
 # } 
 
 
@@ -101,9 +101,20 @@
 # GET http://localhost:3000/api/Busqueda?estado=3&texto=
 
 //Busqueda ficha
-POST http://localhost:3000/api/verificaciones
-Content-Type: application/json
+# POST http://localhost:3000/api/verificaciones
+# Content-Type: application/json
 
-{
-    "Ficha": "12345678900987654321"
-}
+# {
+#     "Ficha": "12345678900987654321"
+# }
+
+//Modificar contraseña usuario
+
+# PUT http://localhost:3000/api/Usuario/ModPass
+# Content-Type: application/json
+
+# {
+#     "IdInformador": 3,
+#     "NuevaContraseña": "C1h34"
+
+# }

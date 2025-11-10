@@ -8,9 +8,7 @@ const ButtonBucar = document.getElementById("ButtonBuscar");
 //Tabla
 const Tabla = document.getElementById("CuerpoTablaBuscar");
 
-ButtonBucar.addEventListener('click', async (e) => {
-    e.preventDefault();
-
+async function LLenasrTabla() {
     try {
         const estado = EstadoOptions.value;
         const texto = TextoBusqueda.value;
@@ -28,8 +26,7 @@ ButtonBucar.addEventListener('click', async (e) => {
 
         console.log("Datos recibidos:", data);
 
-        // ✅ Tomar solo el array que está dentro de data[0].datos
-        const registros = data  .datos || [];
+        const registros = data.datos || [];
 
         console.log("Registros encontrados:", registros);
 
@@ -41,10 +38,10 @@ ButtonBucar.addEventListener('click', async (e) => {
         }
 
         const filasHTML = registros.map(r => {
-            const FechaPE = formatearFechaParaInput( r.FechaPrimeraEtapa) || '';
-            const FechaSE = formatearFechaParaInput (r.FechaSegundaEtapa) || '';
-            const FechaTE = formatearFechaParaInput (r.FechaTerceraEtapa) || '';
-            
+            const FechaPE = formatearFechaParaInput(r.FechaPrimeraEtapa) || '';
+            const FechaSE = formatearFechaParaInput(r.FechaSegundaEtapa) || '';
+            const FechaTE = formatearFechaParaInput(r.FechaTerceraEtapa) || '';
+
             let DocsEnPunto = '';
             if (FechaTE) {
                 if (r.DocumentosEnPunto === 1) {
@@ -74,6 +71,11 @@ ButtonBucar.addEventListener('click', async (e) => {
     } catch (error) {
         console.error("Error en la búsqueda:", error);
     }
+}
+
+ButtonBucar.addEventListener('click', async (e) => {
+    e.preventDefault();
+    LLenasrTabla();
 });
 
 //Formateo de fechas
@@ -87,5 +89,7 @@ function formatearFechaParaInput(fechaISO) {
 
     return `${anio}-${mes}-${dia}`;
 }
+
+window.addEventListener('load', LLenasrTabla);
 
 
