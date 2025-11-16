@@ -1,6 +1,5 @@
 import express from "express";
 import db from "../db.js";
-import { resourceUsage } from "process";
 
 const router = express.Router()
 
@@ -144,7 +143,7 @@ router.post("/verificaciones/solicitudes", (req, res) => {
 });
 
 //Registrar segunda etapa
-router.put("/Verificaciones/SegundaEtapa", (req, res) => {
+router.put("/verificaciones/SegundaEtapa", (req, res) => {
     const { FechaSegundaEtapa, Levantamiento, DescripcionSegundaEtapa, IdSolicitud } = req.body;
 
     if (!FechaSegundaEtapa || !Levantamiento || !DescripcionSegundaEtapa || !IdSolicitud) return res.status(400).json({ error: "Faltan campos obligatorios" });

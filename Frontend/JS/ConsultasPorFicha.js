@@ -2,6 +2,7 @@
 const ButtonConsultar = document.getElementById("ButtonConsultar");
 const ButtonRegistrarPrimeraEtapa = document.getElementById("ButtonRegistrarPrimeraEtapa");
 const ButtonRegistrarTerceraEtapa = document.getElementById("ButtonRegistrarTerceraEtapa");
+const ButtonRegistarSegundaEtapa = document.getElementById("ButtonRegistrarSegundaEtapa");
 
 //Campos Primera etapa
 const Ficha = document.getElementById("TextFichaPrimeraEtapa");
@@ -21,7 +22,7 @@ const SelectTipologia3 = document.getElementById("SelectTipologia3");
 const DescripcionPrimeraEtapa = document.getElementById("InputDescripcionPrimeraEtapa");
 
 //Campos Segunda Etapa
-const levantamiento = document.getElementById("SelectRespuestaLevantamiento");
+const Levantamiento = document.getElementById("SelectRespuestaLevantamiento");
 const FechaSegundaEtapa = document.getElementById("InputFechaSegundaEtapa");
 const DescripcionSegundaEtapa = document.getElementById("InputDescripcionSegundaEtapa");
 
@@ -45,7 +46,7 @@ const TerceraEtapa = document.getElementById("RadioTerceraEtapa");
 
 //Constantes campos primera seguna y tercera etapa
 const CamposPrimeraEtapa = [Fecha, Hogar, Orden, TipoDocumento, NumeroDocumento, Celular, Correo, Informador, PuntoAtencion, Codigo, SelectTipologia1, SelectTipologia2, SelectTipologia3, DescripcionPrimeraEtapa];
-const CamposSegundaEtapa = [levantamiento, FechaSegundaEtapa, DescripcionSegundaEtapa];
+const CamposSegundaEtapa = [Levantamiento, FechaSegundaEtapa, DescripcionSegundaEtapa];
 const CamposTerceraEtapa = [DocumentosEnPunto, FechaTerceraEtapa, TramiteRealizado, IdRespuesta, FichaTerceraEtapa, HogarTerceraEtapa, OrdenTerceraEtapa, TipoDocumentoTerceraEtapa, NumeroDocumentoTerceraEtapa, DescripcionTerceraEtapa];
 
 //Variables
@@ -115,12 +116,24 @@ ButtonConsultar.addEventListener("click", async (e) => {
             LLenarDatos = [CamposPrimeraEtapa, ValoresPrimeraEtapa];
             LlenarCampos(LLenarDatos);
 
+            //Si es admin se habilia la segund etapa para que realice el registro
+            if (usuario.Rol === 1) {
+                ArrayDeshabilitar.push(CamposPrimeraEtapa, TerceraEtapa, Ficha, ButtonRegistrarPrimeraEtapa);
+                DeshabilitarCampos(ArrayDeshabilitar);
+                ArrarHabilitar.push(ButtonRegistarSegundaEtapa);
+                HabilitarCampos(ArrarHabilitar);
+                FechaSegundaEtapa.value = formatearFechaParaInput(new Date());
+                alert("La solicitud se encuentra pendiente de respuesta.");
+                return;
+            }
+
+            //Si NO es admin no se muestra la segunda etapa
             ArrayDeshabilitar.push(CamposPrimeraEtapa, SegundaEtapa, TerceraEtapa, Ficha, ButtonRegistrarPrimeraEtapa);
             DeshabilitarCampos(ArrayDeshabilitar);
-
             alert("La solicitud se encuentra pendiente de respuesta.");
             return;
-        }
+
+        };
 
         //Solo segunda etapa
         if (registro.FechaSegundaEtapa && !registro.FechaTerceraEtapa) {
@@ -281,6 +294,44 @@ ButtonRegistrarPrimeraEtapa.addEventListener("click", async (e) => {
     }
 });
 
+ButtonRegistarSegundaEtapa.addEventListener("click", async (e) => {
+    e.preventDefault();
+    for (let i = 0; i < CamposSegundaEtapa.length; i++) {
+        if (!CamposSegundaEtapa[i].value) {
+            alert("Digite los campos completos para el registro de esta etapa.");
+            return;
+        };
+    };
+    const datosSegundaEtapa = {
+        IdSolicitud: IdSolicitud,
+        FechaSegundaEtapa: FechaSegundaEtapa.value.trim(),
+        Levantamiento: Levantamiento.value,
+        DescripcionSegundaEtapa: DescripcionSegundaEtapa.value
+    };
+    try {
+        const respuesta = await fetch("http://localhost:3000/api/verificaciones/SegundaEtapa", {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(datosSegundaEtapa)
+        });
+
+        if (respuesta.ok) {
+            alert("Segunda etapa registrada con exito.");
+            ArrayDeshabilitar.push(CamposPrimeraEtapa, CamposSegundaEtapa, CamposTerceraEtapa);
+            DeshabilitarCampos(ArrayDeshabilitar);
+            IdSolicitud = null;
+            return;
+        } else {
+            alert("Error al registrar segunda etapa.");
+        };
+        IdSolicitud = null;
+    } catch (error) {
+        console.log("Error al registrar la segunda etapa: ", error);
+        alert("No se pudo registrar la segunda etapa");
+        IdSolicitud = null;
+    }
+});
+
 //Registro Tercera Etapa
 ButtonRegistrarTerceraEtapa.addEventListener("click", async (e) => {
     e.preventDefault();
@@ -320,8 +371,7 @@ ButtonRegistrarTerceraEtapa.addEventListener("click", async (e) => {
             return;
         } else {
             alert("Error al registrar la tercera etapa.");
-        }
-
+        };
         IdSolicitud = null;
     } catch (error) {
         console.error("Error al registrar la tercera etapa:", error);

@@ -8,7 +8,7 @@ const ButtonBucar = document.getElementById("ButtonBuscar");
 //Tabla
 const Tabla = document.getElementById("CuerpoTablaBuscar");
 
-async function LLenasrTabla() {
+async function LLenarTabla() {
     try {
         const estado = EstadoOptions.value;
         const texto = TextoBusqueda.value;
@@ -73,9 +73,10 @@ async function LLenasrTabla() {
     }
 }
 
+//Consultar
 ButtonBucar.addEventListener('click', async (e) => {
     e.preventDefault();
-    LLenasrTabla();
+    LLenarTabla();
 });
 
 //Formateo de fechas
@@ -90,6 +91,4 @@ function formatearFechaParaInput(fechaISO) {
     return `${anio}-${mes}-${dia}`;
 }
 
-window.addEventListener('load', LLenasrTabla);
-
-
+window.addEventListener('load', LLenarTabla);
