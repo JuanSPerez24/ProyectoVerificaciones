@@ -3,6 +3,9 @@ const TablaUsuarios = document.getElementById('CuerpoTablaUsuarios');
 const BodyUsuarios = document.getElementById('BodyUsuarios');
 const ButtonRegistroUsuario = document.getElementById('ButtonRegistroNuevoUsuario');
 
+//Variables
+let SwitchActivo = 0;
+
 const ModalModificacionDatosHtml = `
   <div class="modal fade" id="ModalModificacionDatos" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
@@ -23,6 +26,10 @@ const ModalModificacionDatosHtml = `
             <select id="SelectTipoDocumentoModal" class="form-select for vm-select mb-2"> </select>
             <label>Numero documento</label>
             <input type="text" id="InputNumeroDocumentoModal" class="form-control mb-2">
+            <label class="form-check-label" for="switchUsuarioActivo">Activo</label>
+            <div class="form-check form-switch">
+              <input class="form-check-input" type="checkbox" role="switch" id="switchUsuarioActivo" checked>
+            </div>
           </form>
         </div>
         <div class="modal-footer">
@@ -205,7 +212,7 @@ async function LlenarSelect(url, select, campoValor, campoTexto, TextoInicial) {
 };
 
 // Función para modificar un usuario
-async function ModificarUsuario(NombreInformador, Correo, IdRol, IdTipoDocumento, NumeroDocumento, Id) {
+async function ModificarUsuario(NombreInformador, Correo, IdRol, IdTipoDocumento, NumeroDocumento, Id, Activo) {
   // Insertar el modal al final del body
   BodyUsuarios.insertAdjacentHTML('beforeend', ModalModificacionDatosHtml);
 
@@ -222,17 +229,20 @@ async function ModificarUsuario(NombreInformador, Correo, IdRol, IdTipoDocumento
   const SelectNombreRolModal = document.getElementById('SelectNombreRolModal');
   const SelectTipoDocumentoModal = document.getElementById("SelectTipoDocumentoModal");
   const InputNumeroDocumentoModal = document.getElementById('InputNumeroDocumentoModal');
+  const switchUsuarioActivo = document.getElementById("switchUsuarioActivo");
   const ButtonCerrarModal = document.getElementById('CerrarModal');
+
+  console.log(Activo);
+  switchUsuarioActivo.checked = (Activo == 1);
 
   //Llenar Inputs
   InputNombreInformadorModal.value = NombreInformador;
   InputCorreoModal.value = Correo;
   InputNumeroDocumentoModal.value = NumeroDocumento;
-
   //Llenar selects modal
   await LlenarSelect('http://localhost:3000/api/TipoDeDocumento', SelectTipoDocumentoModal, 'IdTipoDocumento', 'SiglaTipoDocumento', 'Seleccione un tipo de documento');
   await LlenarSelect('http://localhost:3000/api/Roles', SelectNombreRolModal, 'IdRol', 'NombreRol', 'Seleccione un rol');
-
+  //Llenar selects
   SelectNombreRolModal.value = IdRol;
   SelectTipoDocumentoModal.value = IdTipoDocumento;
 
@@ -247,10 +257,14 @@ async function ModificarUsuario(NombreInformador, Correo, IdRol, IdTipoDocumento
   document.getElementById('BtnGuardarCambios').addEventListener('click', async (e) => {
     e.preventDefault();
 
-    if (!InputNombreInformadorModal || !InputCorreoModal || !InputNumeroDocumentoModal || !SelectNombreRolModal || !SelectTipoDocumentoModal) {
+    if (!InputNombreInformadorModal.value || !InputCorreoModal.value || !InputNumeroDocumentoModal.value || !SelectNombreRolModal.value || !SelectTipoDocumentoModal.value ) {
       alert('Por favor completa todos los campos.');
       return;
     }
+
+    if(switchUsuarioActivo.checked) {
+      SwitchActivo = 1
+    };
 
     try {
       const respuesta = await fetch('http://localhost:3000/api/Usuario/Mod', {
@@ -262,13 +276,15 @@ async function ModificarUsuario(NombreInformador, Correo, IdRol, IdTipoDocumento
           RolId: SelectNombreRolModal.value,
           TipoDocumentoId: SelectTipoDocumentoModal.value,
           NumeroDocumento: InputNumeroDocumentoModal.value,
-          IdInformador: Id
+          IdInformador: Id,
+          Activo: SwitchActivo
         })
       });
 
       const data = await respuesta.json();
       if (!respuesta.ok) {
         alert('Error al modificar el usuario: ' + data.error);
+        return;
       }
 
       alert('Usuario modificado exitosamente');
@@ -367,7 +383,7 @@ async function cargarUsuarios() {
         <td>${u.SiglaTipoDocumento || ''}</td>
         <td>${u.NumeroDocumento || ''}</td>
         <td>
-          <button class="btn btn-primary btn-sm" onclick="ModificarUsuario('${u.NombreInformador}','${u.Correo}',${u.RolId},${u.TipoDocumentoId},'${u.NumeroDocumento}',${u.IdInformador})">Modificar</button>
+          <button class="btn btn-primary btn-sm" onclick="ModificarUsuario('${u.NombreInformador}','${u.Correo}',${u.RolId},${u.TipoDocumentoId},'${u.NumeroDocumento}',${u.IdInformador}, ${u.Activo})">Modificar</button>
           <button class="btn btn-primary btn-sm" onclick="ModificarPassword(${u.IdInformador})" >Cambiar password</button>
         </td>
       </tr>

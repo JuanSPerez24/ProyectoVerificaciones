@@ -9,7 +9,7 @@ router.post("/Login", (req, res) => {
     if (!Correo || !password) return res.status(400).json({ error: "Faltan campos" });
 
     const sqlBusqueda = `
-    SELECT IdInformador, RolId, NombreInformador FROM informador 
+    SELECT IdInformador, RolId, NombreInformador, Activo FROM informador 
     WHERE Correo = ? AND password = ?
     `;
 
@@ -19,12 +19,15 @@ router.post("/Login", (req, res) => {
         if (resultado.length == 0) return res.status(401).json({error: "Credenciales inválida"});
 
         const user = resultado[0]
+        
+        if(user.Activo == 0) return res.status(403).json({error: "Credenciales no validas"});
 
         res.json({
             mensaje: "OK",
             id: user.IdInformador, 
             Rol: user.RolId, 
-            Name: user.NombreInformador
+            Name: user.NombreInformador,
+            Activo: user.Activo
         });
     });
 });

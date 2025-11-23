@@ -30,7 +30,7 @@ router.post("/Usuario/Nuevo", (req, res) => {
 //Modificar un usuario
 router.put("/Usuario/Mod", (req, res) => {
     const {
-        NombreInformador, Correo, RolId, TipoDocumentoId, NumeroDocumento, IdInformador
+        NombreInformador, Correo, RolId, TipoDocumentoId, NumeroDocumento, IdInformador, Activo
     } = req.body;
     if (!NombreInformador || !Correo || !RolId || !TipoDocumentoId || !NumeroDocumento || !IdInformador) return res.status(500).json({ error: "Faltan campos obligatorios" });
 
@@ -41,12 +41,13 @@ router.put("/Usuario/Mod", (req, res) => {
             Correo = ?,
             RolId = ?,
             TipoDocumentoId = ?,
-            NumeroDocumento = ?
+            NumeroDocumento = ?,
+            Activo = ?
         WHERE
             IdInformador = ?;
     `;
 
-    db.query(sqlInformador, [NombreInformador, Correo, RolId, TipoDocumentoId, NumeroDocumento, IdInformador], (err, resultado) => {
+    db.query(sqlInformador, [NombreInformador, Correo, RolId, TipoDocumentoId, NumeroDocumento, Activo, IdInformador], (err, resultado) => {
         if (err) return res.status(500).json({ error: "Erro en la actualizacion de datos del informador" });
 
         if (resultado.affectedRows == 0) return res.status(500).json({ error: "ID usuario no encontrado" });
@@ -59,7 +60,8 @@ router.put("/Usuario/Mod", (req, res) => {
                 RolId,
                 TipoDocumentoId,
                 NumeroDocumento,
-                IdInformador
+                IdInformador,
+                Activo
             }
         });
     });
@@ -94,7 +96,7 @@ router.put("/Usuario/ModPass", (req, res) => {
 //Obtener datos de los usuarios
 router.get("/Usuarios", (req, res) => {
     const sqlInformador = `
-        SELECT IdInformador,NombreInformador, Correo, NombreRol , SiglaTipoDocumento, NumeroDocumento, RolId, TipoDocumentoId FROM informador i
+        SELECT IdInformador,NombreInformador, Correo, NombreRol , SiglaTipoDocumento, NumeroDocumento, RolId, TipoDocumentoId, Activo FROM informador i
         INNER JOIN tiposdocumento on IdTipoDocumento = TipoDocumentoId
         INNER JOIN roles r on i.RolId = r.IdRol
         ;
