@@ -1,6 +1,5 @@
 import express from "express";
 import db from "../db.js";
-import { resourceUsage } from "process";
 
 const router = express.Router();
 

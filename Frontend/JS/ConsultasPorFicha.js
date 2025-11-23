@@ -47,7 +47,7 @@ const TerceraEtapa = document.getElementById("RadioTerceraEtapa");
 //Constantes campos primera seguna y tercera etapa
 const CamposPrimeraEtapa = [Fecha, Hogar, Orden, TipoDocumento, NumeroDocumento, Celular, Correo, Informador, PuntoAtencion, Codigo, SelectTipologia1, SelectTipologia2, SelectTipologia3, DescripcionPrimeraEtapa];
 const CamposSegundaEtapa = [Levantamiento, FechaSegundaEtapa, DescripcionSegundaEtapa];
-const CamposTerceraEtapa = [DocumentosEnPunto, FechaTerceraEtapa, TramiteRealizado, IdRespuesta, FichaTerceraEtapa, HogarTerceraEtapa, OrdenTerceraEtapa, TipoDocumentoTerceraEtapa, NumeroDocumentoTerceraEtapa, DescripcionTerceraEtapa];
+const CamposTerceraEtapa = [DocumentosEnPunto, FechaTerceraEtapa, TramiteRealizado, InformadorTerceraEtapa, IdRespuesta, FichaTerceraEtapa, HogarTerceraEtapa, OrdenTerceraEtapa, TipoDocumentoTerceraEtapa, NumeroDocumentoTerceraEtapa, DescripcionTerceraEtapa];
 
 //Variables
 let LLenarDatos = [];
