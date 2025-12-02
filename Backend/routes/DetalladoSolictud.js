@@ -50,7 +50,7 @@ router.post("/verificaciones", (req, res) => {
 });
 
 //Crear una solicitud (Registrar primera etapa)
-router.post("/verificaciones/solicitudes", (req, res) => {
+router.put("/verificaciones/solicitudes", (req, res) => {
 
     const { FechaPrimeraEtapa, Ficha, informadorPrimeraEtapaId, PuntoAtencionId, VerificacionId, DescripcionPrimerEtapa,
         TipoDocumentoId, NumeroDocumentoSolicitante, Correo, Celular, Hogar, Orden, Tipologias } = req.body
