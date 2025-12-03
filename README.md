@@ -226,6 +226,6 @@ node server.js
 
 ## 📌 Estado del proyecto
 
-El proyecto se encuentra en desarrollo activo y puede ser utilizado como base para:
+El proyecto se encuentra en desarrollo activo.
 
 ---
