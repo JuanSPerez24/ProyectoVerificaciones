@@ -136,15 +136,15 @@ http://localhost:3000
 
 ## 📊 Roles y Permisos
 
-| Funcionalidad | Admin | Usuario Normal | Revisor |
-|---|:---:|:---:|:---:|
-| Login | ✅ | ✅ | ✅ |
-| Nuevo Registro | ✅ | ✅ | ❌ |
-| Editar Solicitud | ✅ | ✅ | ❌ |
-| Buscar Solicitudes | ✅ | ✅ | ✅ |
-| Ver Usuarios | ✅ | ❌ | ❌ |
-| Crear Usuarios | ✅ | ❌ | ❌ |
-| Reportes | ✅ | ❌ | ✅ |
+| Funcionalidad | Admin | Usuario Normal |
+|---|:---:|:---:|
+| Login | ✅ | ✅ |
+| Nuevo Registro | ✅ | ✅ |
+| Editar Solicitud | ✅ | ✅ |
+| Buscar Solicitudes | ✅ | ✅ |
+| Ver Usuarios | ✅ | ❌ | 
+| Crear Usuarios | ✅ | ❌ |
+| Reportes | ✅ | ❌ | 
 
 ---
 
