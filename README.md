@@ -1,7 +1,3 @@
-Perfecto, aquí tienes un **README.md limpio, corto, profesional y listo para pegar en GitHub**:
-
----
-
 # 📝 Proyecto Verificaciones
 
 Aplicación web para la **gestión, registro y consulta de solicitudes**, desarrollada con **Node.js (Express)** en el backend y **HTML/CSS/JavaScript** en el frontend.
@@ -110,7 +106,3 @@ Backend/BD/
 
 El proyecto se encuentra en desarrollo activo y puede ser utilizado como base para:
 
----
-
-Si quieres, puedo hacerte un **README con badges, capturas, logo, y secciones avanzadas** para que se vea más profesional.
-Solo dime 😉
