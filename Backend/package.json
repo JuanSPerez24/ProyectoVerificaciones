@@ -1,16 +1,23 @@
 {
   "name": "proyecto-verificaciones",
   "version": "1.0.0",
+  "type": "module",
   "description": "Sistema de Gestión de Marcas en Verificación",
-  "main": "Backend/server.js",
+  "main": "server.js",
   "scripts": {
-    "start": "node Backend/server.js",
-    "build": "cd Backend && npm install"
+    "start": "node server.js",
+    "dev": "node server.js"
   },
   "engines": {
     "node": "18.x"
   },
   "keywords": ["verificaciones", "marcas", "solicitudes"],
   "author": "JuanSPerez24",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "mysql2": "^3.15.3"
+  }
 }
