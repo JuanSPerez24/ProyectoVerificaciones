@@ -10,6 +10,10 @@ import UsuariosModificacionYRegistro from "./routes/UsuariosModificacionYRegistr
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+app.get('/', (req, res) => {
+  res.json({ mensaje: 'API Proyecto Verificaciones', estado: 'online' });
+});
+
 app.use(express.json());
 app.use(cors());
 
