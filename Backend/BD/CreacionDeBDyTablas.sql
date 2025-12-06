@@ -1,4 +1,5 @@
 CREATE DATABASE verificaciones;
+
 USE verificaciones;
 
 CREATE TABLE tiposdocumento (

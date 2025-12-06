@@ -41,9 +41,9 @@ INSERT INTO roles (IdRol, NombreRol) VALUES
 (2, 'Digitador');
 
 INSERT INTO informador (IdInformador, NombreInformador, Correo, Password, RolId, TipoDocumentoId, NumeroDocumento) VALUES
-(1,'Juan Sebastian Perez Rodriguez','sebastianperez11321@gmail.com',1 ,1 ,2 ,'1032676059'),
-(2, 'Laura Vanessa Torres Garcia', 'laura.torres@gmail.com', 2, 2, 2, '1002456789'),
-(3, 'Miguel Angel Rodriguez Castro', 'miguel.rodriguez@gmail.com', 2, 2, 1, '9876543210');
+(1,'Juan Sebastian Perez Rodriguez','sebastianperez11321@gmail.com',"SPerez" ,1 ,2 ,'1032676059'),
+(2, 'Laura Vanessa Torres Garcia', 'laura.torres@gmail.com', "LTorres", 2, 2, '1002456789'),
+(3, 'Miguel Angel Rodriguez Castro', 'miguel.rodriguez@gmail.com', "MRodriguez", 2, 1, '9876543210');
 
 INSERT INTO codigosverificacion (IdVerificaciones, CodigoVerificacion, DescripcionVerificacion) VALUES
 (1,'30','30 - Verificación - Jefe de hogar - Por denuncia'),
