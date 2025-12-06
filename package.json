@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "type": "module",
   "description": "Sistema de Gestión de Marcas en Verificación",
-  "main": "server.js",
+  "main": "Backend/server.js",
   "scripts": {
-    "start": "node server.js",
-    "dev": "node server.js"
+    "start": "node Backend/server.js",
+    "dev": "node Backend/server.js"
   },
   "engines": {
     "node": "18.x"
