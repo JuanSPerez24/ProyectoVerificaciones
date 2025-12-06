@@ -1,5 +1,5 @@
 node_modules/
-.env
+.envo
 
 package-lock.json
 API_DOCUMENTATION.md
