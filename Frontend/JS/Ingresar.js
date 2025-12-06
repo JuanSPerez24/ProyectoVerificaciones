@@ -20,7 +20,7 @@ BotonLogin.addEventListener("click", async (e) => {
     if (resultado.ok) {
       localStorage.setItem('token', data.token);
       localStorage.setItem("usuario", JSON.stringify(data));
-      window.location.href = "/Frontend/HTML/RegistroYconsulta.html";
+      window.location.href = "/HTML/RegistroYconsulta.html";
     } else {
       alert(data.error || "Error al iniciar sesión");
     }
