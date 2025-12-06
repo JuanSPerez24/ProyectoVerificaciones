@@ -1,4 +1,4 @@
-CREATE DATABASE ExampleVerificaciones;
+CREATE DATABASE verificaciones;
 USE verificaciones;
 
 CREATE TABLE tiposdocumento (

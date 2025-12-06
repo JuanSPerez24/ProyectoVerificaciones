@@ -1,3 +1,5 @@
+USE verificaciones;
+
 INSERT INTO tiposdocumento (IdTipoDocumento, SiglaTipoDocumento, TextoTipoDocumento) VALUES
 (1,'TI','Tarjeta de identidad'),
 (2,'CC','Cédula de ciudadanía'),
@@ -136,7 +138,6 @@ INSERT INTO tramitetipologias (SolicitudId, TipologiaId) VALUES
 (8, 2),
 (9, 1),
 (10, 2),
-
 (11, 1),
 (12, 2),
 (13, 1),
@@ -147,7 +148,6 @@ INSERT INTO tramitetipologias (SolicitudId, TipologiaId) VALUES
 (18, 2),
 (19, 1),
 (20, 2),
-
 (21, 1),
 (22, 2),
 (23, 1);
