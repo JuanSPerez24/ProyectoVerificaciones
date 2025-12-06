@@ -1,3 +1,5 @@
+import API_URL from './config.js';
+
 //Campos de búsqueda
 const EstadoOptions = document.getElementById('SelectEstadoBuscar');
 const TextoBusqueda = document.getElementById('TextoBusqueda');
@@ -13,7 +15,7 @@ async function LLenarTabla() {
         const estado = EstadoOptions.value;
         const texto = TextoBusqueda.value;
 
-        const url = `http://localhost:3000/api/Busqueda?estado=${encodeURIComponent(estado)}&texto=${encodeURIComponent(texto)}`;
+        const url = `${API_URL}/Busqueda?estado=${encodeURIComponent(estado)}&texto=${encodeURIComponent(texto)}`;
 
         const respuesta = await fetch(url);
 

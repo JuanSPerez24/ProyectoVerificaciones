@@ -11,8 +11,7 @@ router.get("/Busqueda", (req, res) => {
         return res.status(400).json({ error: "Falta el parámetro 'estado' para realizar la búsqueda." });
     }
 
-    const estadoNum = parseInt(estado, 10); // 🔹 convertir a número
-
+    const estadoNum = parseInt(estado, 10);
     let sql = `
         SELECT 
             s.FechaPrimeraEtapa,

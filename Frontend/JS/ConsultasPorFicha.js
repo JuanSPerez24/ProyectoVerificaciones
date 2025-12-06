@@ -1,3 +1,4 @@
+import API_URL from './config.js';
 //Botones de registro consulta y limpiar
 const ButtonConsultar = document.getElementById("ButtonConsultar");
 const ButtonRegistrarPrimeraEtapa = document.getElementById("ButtonRegistrarPrimeraEtapa");
@@ -56,8 +57,8 @@ let ArrarHabilitar = [];
 let IdSolicitud = null;
 
 //Llenar selects de informadores
-LlenarSelect("http://localhost:3000/api/Usuarios", Informador, "IdInformador", "NombreInformador", "Seleccione Iinformador")
-LlenarSelect("http://localhost:3000/api/Usuarios", InformadorTerceraEtapa, "IdInformador", "NombreInformador", "Seleccione Iinformador")
+LlenarSelect(`${API_URL}/Usuarios`, Informador, "IdInformador", "NombreInformador", "Seleccione Iinformador")
+LlenarSelect(`${API_URL}/Usuarios`, InformadorTerceraEtapa, "IdInformador", "NombreInformador", "Seleccione Iinformador")
 
 //Llenar informador con el usuario logeado
 const usuario = JSON.parse(localStorage.getItem("usuario"));
@@ -78,7 +79,7 @@ ButtonConsultar.addEventListener("click", async (e) => {
     }
 
     try {
-        const respuesta = await fetch("http://localhost:3000/api/verificaciones", {
+        const respuesta = await fetch(`${API_URL}/verificaciones`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ Ficha: fichaValor })
@@ -90,7 +91,7 @@ ButtonConsultar.addEventListener("click", async (e) => {
         if (!respuesta.ok) {
             if (respuesta.status === 404) {
                 alert("No se encontró ninguna solicitud con esa ficha.");
-                FechaPrimeraEtapa.value = formatearFechaParaInput(new Date());
+                Fecha.value = formatearFechaParaInput(new Date());
                 ArrayDeshabilitar.push(SegundaEtapa, TerceraEtapa);
                 DeshabilitarCampos(ArrayDeshabilitar);
                 ArrarHabilitar.push(PrimeraEtapa, ButtonRegistrarPrimeraEtapa);
@@ -196,7 +197,7 @@ ButtonConsultar.addEventListener("click", async (e) => {
 
 //Formateo de fechas
 function formatearFechaParaInput(fechaISO) {
-    if (!fechaISO) return "";
+    if (!fechaISO) return " ";
 
     const fecha = new Date(fechaISO);
     const dia = String(fecha.getDate()).padStart(2, "0");
@@ -273,7 +274,7 @@ ButtonRegistrarPrimeraEtapa.addEventListener("click", async (e) => {
     };
 
     try {
-        const respuesta = await fetch("http://localhost:3000/api/verificaciones/solicitudes", {
+        const respuesta = await fetch(`${API_URL}/verificaciones/solicitudes`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(datosPrimeraEtapa)
@@ -309,7 +310,7 @@ ButtonRegistarSegundaEtapa.addEventListener("click", async (e) => {
         DescripcionSegundaEtapa: DescripcionSegundaEtapa.value
     };
     try {
-        const respuesta = await fetch("http://localhost:3000/api/verificaciones/SegundaEtapa", {
+        const respuesta = await fetch(`${API_URL}/verificaciones/SegundaEtapa`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(datosSegundaEtapa)
@@ -358,7 +359,7 @@ ButtonRegistrarTerceraEtapa.addEventListener("click", async (e) => {
         Orden: OrdenTerceraEtapa.value
     };
     try {
-        const respuesta = await fetch("http://localhost:3000/api/verificaciones/TerceraEtapa", {
+        const respuesta = await fetch(`${API_URL}/verificaciones/TerceraEtapa`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(datosTerceraEtapa)
@@ -401,20 +402,20 @@ async function LlenarSelect(url, select, campoValor, campoTexto, TextoInicial) {
 };
 
 //Lenar selects de Tipos de documento
-LlenarSelect("http://localhost:3000/api/TipoDeDocumento", TipoDocumento, "IdTipoDocumento", "SiglaTipoDocumento", "Seleccione tipo documento")
-LlenarSelect("http://localhost:3000/api/TipoDeDocumento", TipoDocumentoTerceraEtapa, "IdTipoDocumento", "SiglaTipoDocumento", "Seleccione tipo documento")
+LlenarSelect(`${API_URL}/TipoDeDocumento`, TipoDocumento, "IdTipoDocumento", "SiglaTipoDocumento", "Seleccione tipo documento")
+LlenarSelect(`${API_URL}/TipoDeDocumento`, TipoDocumentoTerceraEtapa, "IdTipoDocumento", "SiglaTipoDocumento", "Seleccione tipo documento")
 
 //Llenar selects de puntsod e atencion
-LlenarSelect("http://localhost:3000/api/PuntosDeAtencion", PuntoAtencion, "IdPuntoAtencion", "NombrePuntoAtencion", "Seleccione punto atención")
+LlenarSelect(`${API_URL}/PuntosDeAtencion`, PuntoAtencion, "IdPuntoAtencion", "NombrePuntoAtencion", "Seleccione punto atención")
 
 //Lenar selects de codigos verificaciones
-LlenarSelect("http://localhost:3000/api/CodigosVerificaciones", Codigo, "IdVerificaciones", "DescripcionVerificacion", "Seleccione verificación")
+LlenarSelect(`${API_URL}/CodigosVerificaciones`, Codigo, "IdVerificaciones", "DescripcionVerificacion", "Seleccione verificación")
 
 //Llenar selects de tramite de tercera etapa
-LlenarSelect("http://localhost:3000/api/Tramites", TramiteRealizado, "IdTramite", "NombreTramite", "Seleccione tramite realizado")
+LlenarSelect(`${API_URL}/Tramites`, TramiteRealizado, "IdTramite", "NombreTramite", "Seleccione tramite realizado")
 
 //Lenar selects de tipologias
-LlenarSelect("http://localhost:3000/api/Tipologias", SelectTipologia1, "IdTipologia", "NombreTramite", "Seleccione tipologia 1")
-LlenarSelect("http://localhost:3000/api/Tipologias", SelectTipologia2, "IdTipologia", "NombreTramite", "Seleccione tipologia 2")
-LlenarSelect("http://localhost:3000/api/Tipologias", SelectTipologia3, "IdTipologia", "NombreTramite", "Seleccione tipologia 3")
+LlenarSelect(`${API_URL}/Tipologias`, SelectTipologia1, "IdTipologia", "NombreTramite", "Seleccione tipologia 1")
+LlenarSelect(`${API_URL}/Tipologias`, SelectTipologia2, "IdTipologia", "NombreTramite", "Seleccione tipologia 2")
+LlenarSelect(`${API_URL}/Tipologias`, SelectTipologia3, "IdTipologia", "NombreTramite", "Seleccione tipologia 3")
 

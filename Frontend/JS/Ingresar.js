@@ -1,3 +1,5 @@
+import API_URL from './config.js';
+
 const BotonLogin = document.getElementById("ButtonIngreso");
 
 BotonLogin.addEventListener("click", async (e) => {
@@ -7,7 +9,7 @@ BotonLogin.addEventListener("click", async (e) => {
   const password = document.getElementById("InputPassword").value;
 
   try {
-    const resultado = await fetch("http://localhost:3000/api/Login", {
+    const resultado = await fetch(`${API_URL}/Login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ Correo, password })
@@ -16,6 +18,7 @@ BotonLogin.addEventListener("click", async (e) => {
     const data = await resultado.json();
 
     if (resultado.ok) {
+      localStorage.setItem('token', data.token);
       localStorage.setItem("usuario", JSON.stringify(data));
       window.location.href = "/Frontend/HTML/RegistroYconsulta.html";
     } else {

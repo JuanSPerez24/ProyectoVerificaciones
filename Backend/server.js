@@ -8,6 +8,7 @@ import Login  from "./routes/Login.js";
 import UsuariosModificacionYRegistro from "./routes/UsuariosModificacionYRegistro.js";
 
 const app = express();
+const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use(cors());
@@ -19,6 +20,6 @@ app.use("/api", Login);
 app.use("/api", UsuariosModificacionYRegistro);
 
 //Dar el link del localhost
-app.listen(3000, () => {
-    console.log("El servidor esta corriendo en el servidor http://localhost:3000");
+app.listen(PORT, () => {
+    console.log(`Servidor corriendo en puerto ${PORT}`);
 });

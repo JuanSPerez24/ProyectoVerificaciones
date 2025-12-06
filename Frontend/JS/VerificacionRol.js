@@ -4,7 +4,7 @@ const VerUsuario = document.getElementById("ListaPantallas");
 document.addEventListener("DOMContentLoaded", (e) => {
     e.preventDefault();
     const usuario = JSON.parse(localStorage.getItem("usuario"));
-    console.log(usuario);
+    //console.log(usuario);
     if (!usuario.Rol) {
         CerrarSesion();
     }

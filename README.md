@@ -68,8 +68,6 @@ ProyectoVerificaciones/
 │   │   ├── ListasDesplegables.js
 │   │   └── UsuariosModificacionYRegistro.js
 │   │
-│   ├── uploads/                      # Almacenamiento de documentos
-│   ├── logs/                         # Registros del servidor
 │   └── test.rest                     # Pruebas de API (REST Client)
 │
 └── Frontend/
@@ -309,7 +307,6 @@ node server.js
 ## 👥 Contribuidores
 
 - **Juan S Pérez** - Desarrollador principal
-- **Equipo SENA** - Supervisión y requerimientos
 
 ---
 

@@ -1,4 +1,4 @@
-
+import API_URL from './config.js';
 const TablaUsuarios = document.getElementById('CuerpoTablaUsuarios');
 const BodyUsuarios = document.getElementById('BodyUsuarios');
 const ButtonRegistroUsuario = document.getElementById('ButtonRegistroNuevoUsuario');
@@ -130,8 +130,8 @@ ButtonRegistroUsuario.addEventListener('click', async (e) => {
   const ModalRegistroUsuario = new bootstrap.Modal(ModalElement);
 
   //Llenar selects modal
-  await LlenarSelect('http://localhost:3000/api/TipoDeDocumento', SelectTipoDocumentoModal, 'IdTipoDocumento', 'SiglaTipoDocumento', 'Seleccione un tipo de documento');
-  await LlenarSelect('http://localhost:3000/api/Roles', SelectNombreRolModal, 'IdRol', 'NombreRol', 'Seleccione un rol');
+  await LlenarSelect(`${API_URL}/TipoDeDocumento`, SelectTipoDocumentoModal, 'IdTipoDocumento', 'SiglaTipoDocumento', 'Seleccione un tipo de documento');
+  await LlenarSelect(`${API_URL}/Roles`, SelectNombreRolModal, 'IdRol', 'NombreRol', 'Seleccione un rol');
 
   ModalRegistroUsuario.show();
 
@@ -170,7 +170,7 @@ ButtonRegistroUsuario.addEventListener('click', async (e) => {
         IdRol: SelectNombreRolModal.value,
       };
 
-      const respuesta = await fetch("http://localhost:3000/api/Usuario/Nuevo", {
+      const respuesta = await fetch(`${API_URL}/Usuario/Nuevo`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(DatosUsuario)
@@ -240,8 +240,8 @@ async function ModificarUsuario(NombreInformador, Correo, IdRol, IdTipoDocumento
   InputCorreoModal.value = Correo;
   InputNumeroDocumentoModal.value = NumeroDocumento;
   //Llenar selects modal
-  await LlenarSelect('http://localhost:3000/api/TipoDeDocumento', SelectTipoDocumentoModal, 'IdTipoDocumento', 'SiglaTipoDocumento', 'Seleccione un tipo de documento');
-  await LlenarSelect('http://localhost:3000/api/Roles', SelectNombreRolModal, 'IdRol', 'NombreRol', 'Seleccione un rol');
+  await LlenarSelect(`${API_URL}/TipoDeDocumento`, SelectTipoDocumentoModal, 'IdTipoDocumento', 'SiglaTipoDocumento', 'Seleccione un tipo de documento');
+  await LlenarSelect(`${API_URL}/Roles`, SelectNombreRolModal, 'IdRol', 'NombreRol', 'Seleccione un rol');
   //Llenar selects
   SelectNombreRolModal.value = IdRol;
   SelectTipoDocumentoModal.value = IdTipoDocumento;
@@ -267,7 +267,7 @@ async function ModificarUsuario(NombreInformador, Correo, IdRol, IdTipoDocumento
     };
 
     try {
-      const respuesta = await fetch('http://localhost:3000/api/Usuario/Mod', {
+      const respuesta = await fetch(`${API_URL}/Usuario/Mod`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -330,7 +330,7 @@ async function ModificarPassword(IdUsuario) {
     }
 
     try {
-      const respuesta = await fetch("http://localhost:3000/api/Usuario/ModPass", {
+      const respuesta = await fetch(`${API_URL}/Usuario/ModPass`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -361,7 +361,7 @@ async function ModificarPassword(IdUsuario) {
 // Cargar los usuarios desde el backend
 async function cargarUsuarios() {
   try {
-    const respuesta = await fetch('http://localhost:3000/api/Usuarios');
+    const respuesta = await fetch(`${API_URL}/Usuarios`);
     const data = await respuesta.json();
 
     // console.log("Datos recibidos:", data);
