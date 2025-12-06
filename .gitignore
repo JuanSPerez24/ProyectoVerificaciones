@@ -1,5 +1,6 @@
 node_modules/
 .envo
+.env
 
 package-lock.json
 API_DOCUMENTATION.md
@@ -25,3 +26,7 @@ VERIFICACION_COMPLETADA.md
 VERIFICAR_PROYECTO.md
 SOLUCION_NPM_ERROR.md
 EJECUTA_AHORA.md
+Backend/.env
+Backend/.env
+Backend/.env
+Backend/.env
