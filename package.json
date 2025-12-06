@@ -5,7 +5,7 @@
   "main": "Backend/server.js",
   "scripts": {
     "start": "node Backend/server.js",
-    "postinstall": "cd Backend && npm install"
+    "build": "cd Backend && npm install"
   },
   "engines": {
     "node": "18.x"
