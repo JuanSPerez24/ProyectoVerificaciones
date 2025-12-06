@@ -1,6 +1,6 @@
 const API_URL = 
   window.location.hostname === 'localhost' 
-    ? 'http://localhost:3000/api'
-    : `${window.location.origin}/api`;
+    ? 'http://localhost:3000'
+    : `${window.location.origin}`;
 
 export default API_URL;
