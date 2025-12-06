@@ -4,6 +4,7 @@ Railway no pudo detectar tu aplicación porque está en la carpeta `Backend/` y 
 
 ---
 
+
 ## ✅ LO QUE SE HIZO
 
 Se crearon 3 archivos en la raíz del proyecto:
