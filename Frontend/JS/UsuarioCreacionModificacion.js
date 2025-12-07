@@ -18,17 +18,17 @@ const ModalModificacionDatosHtml = `
           <form>
             <label>Nombre informador:</label>
             <input type="text" id="InputNombreInformadorModal" class="form-control mb-2">
-            <label>Correo</label>
+            <label>Correo:</label>
             <input type="text" id="InputCorreoModal" class="form-control mb-2">
-            <label>Rol</label>
+            <label>Rol:</label>
             <select id="SelectNombreRolModal" class="form-select mb-2"> </select>
-            <label>Tipo Documento</label>
-            <select id="SelectTipoDocumentoModal" class="form-select for vm-select mb-2"> </select>
-            <label>Numero documento</label>
+            <label>Tipo Documento:</label>
+            <select id="SelectTipoDocumentoModal" class="form-select mb-2"> </select>
+            <label>Numero documento:</label>
             <input type="text" id="InputNumeroDocumentoModal" class="form-control mb-2">
-            <label class="form-check-label" for="switchUsuarioActivo">Activo</label>
+            <label class="form-check-label" for="switchUsuarioActivo">Activo:</label>
             <div class="form-check form-switch">
-              <input class="form-check-input" type="checkbox" role="switch" id="switchUsuarioActivo" checked>
+              <input class="form-check-input" type="checkbox" role="switch" id="switchUsuarioActivo">
             </div>
           </form>
         </div>
@@ -69,20 +69,20 @@ const ModalRegistroUsuarioHtml = `
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="ModalLabel">Modificar Usuario</h5>
+          <h5 class="modal-title" id="ModalLabel">Registrar Usuario</h5>
           <button type="button" class="btn-close" id="CerrarModal" ></button>
         </div>
         <div class="modal-body">
           <form>
             <label>Nombre informador:</label>
             <input type="text" id="InputNombreInformadorModal" class="form-control mb-2">
-            <label>Correo</label>
+            <label>Correo:</label>
             <input type="text" id="InputCorreoModal" class="form-control mb-2">
-            <label>Rol</label>
+            <label>Rol:</label>
             <select id="SelectNombreRolModal" class="form-select mb-2"> </select>
-            <label>Tipo Documento</label>
-            <select id="SelectTipoDocumentoModal" class="form-select for vm-select mb-2"> </select>
-            <slabel>Numero documento</label>
+            <label>Tipo Documento:</label>
+            <select id="SelectTipoDocumentoModal" class="form-select mb-2"> </select>
+            <label>Numero documento:</label>
             <input type="text" id="InputNumeroDocumentoModal" class="form-control mb-2">
             <label>Contraseña:</label>
             <input type="password" id="InputPasswordNuevaModal" autocomplete="new-password" class="form-control mb-2">
@@ -262,9 +262,7 @@ async function ModificarUsuario(NombreInformador, Correo, IdRol, IdTipoDocumento
       return;
     }
 
-    if(switchUsuarioActivo.checked) {
-      SwitchActivo = 1
-    };
+    SwitchActivo = switchUsuarioActivo.checked ? 1 : 0;
 
     try {
       const respuesta = await fetch(`${API_URL}/Usuario/Mod`, {
@@ -397,6 +395,10 @@ async function cargarUsuarios() {
     console.error('Error al cargar los usuarios:', error);
   }
 }
+
+// Exponer funciones globalmente para onclick en HTML
+window.ModificarUsuario = ModificarUsuario;
+window.ModificarPassword = ModificarPassword;
 
 // Cargar los usuarios cuando se cargue la página
 window.addEventListener('load', cargarUsuarios);
