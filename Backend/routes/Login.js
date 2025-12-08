@@ -14,9 +14,12 @@ router.post("/Login", (req, res) => {
     `;
 
     db.query(sqlBusqueda, [Correo,password], (err, resultado) => {
-        if (err) return res.status(500).json({error: "Error al buscar"});
+        if (err) {
+            console.error("Error en Login query:", err);
+            return res.status(500).json({error: "Error al buscar", detalle: err.message});
+        }
 
-        if (resultado.length == 0) return res.status(401).json({error: "Credenciales inválida"});
+        if (resultado.length == 0) return res.status(401).json({error: "Credenciales inválidas"});
 
         const user = resultado[0]
         
