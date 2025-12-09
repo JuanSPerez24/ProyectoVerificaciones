@@ -382,7 +382,7 @@ async function cargarUsuarios() {
         <td>${u.NumeroDocumento || ''}</td>
         <td>
           <button class="btn btn-primary btn-sm" onclick="ModificarUsuario('${u.NombreInformador}','${u.Correo}',${u.RolId},${u.TipoDocumentoId},'${u.NumeroDocumento}',${u.IdInformador}, ${u.Activo})">Modificar</button>
-          <button class="btn btn-primary btn-sm" onclick="ModificarPassword(${u.IdInformador})" >Cambiar password</button>
+          <button class="btn btn-primary btn-sm" onclick="ModificarPassword(${u.IdInformador})" >Cambiar contraseña</button>
         </td>
       </tr>
     `).join('');
