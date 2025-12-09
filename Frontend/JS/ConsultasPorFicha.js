@@ -141,26 +141,27 @@ ButtonConsultar.addEventListener("click", async (e) => {
 
 
             if (registro.Levantamiento === "0" || registro.Levantamiento === 0) {
-                alert("La solicitud no requiere tercera etapa, proceso finalizado.");
 
-
-                const RegistrarOtraSolicitud = confirm("Desea registrar una nueva solicitud con esta ficha.");
+                const RegistrarOtraSolicitud = confirm("La solicitud no requiere tercera etapa, proceso finalizado.\nDesea registrar una nueva solicitud con esta ficha.");
 
                 if (RegistrarOtraSolicitud){
                     ArrayDeshabilitar.push(CamposSegundaEtapa, CamposTerceraEtapa, Ficha, FormSegundaEtapa, FormTerceraEtapa, ButtonRegistrarTerceraEtapa);
                     DeshabilitarCampos(ArrayDeshabilitar);
                     ArrayHabilitar.push(CamposPrimeraEtapa, ButtonRegistrarPrimeraEtapa);
                     HabilitarCampos(ArrayHabilitar);
-
                     return;
                 };
 
-                LLenarDatos = [CamposPrimeraEtapa, ValoresPrimeraEtapa];
-                LlenarCampos(LLenarDatos);
+                const VerDatosSE = confirm("¿Quiere ver la información registrada?");
 
-                LLenarDatos = [CamposSegundaEtapa, ValoresSegundaEtapa];
-                LlenarCampos(LLenarDatos);
+                if(VerDatosSE){
 
+                    LLenarDatos = [CamposPrimeraEtapa, ValoresPrimeraEtapa];
+                    LlenarCampos(LLenarDatos);
+                    
+                    LLenarDatos = [CamposSegundaEtapa, ValoresSegundaEtapa];
+                    LlenarCampos(LLenarDatos);
+                }
                 ArrayDeshabilitar.push(CamposPrimeraEtapa, FormTerceraEtapa, Ficha, CamposSegundaEtapa, ButtonRegistrarPrimeraEtapa);
                 DeshabilitarCampos(ArrayDeshabilitar);
                 ArrayHabilitar.push(FormSegundaEtapa);
