@@ -342,7 +342,7 @@ ButtonRegistarSegundaEtapa.addEventListener("click", async (e) => {
         DescripcionSegundaEtapa: DescripcionSegundaEtapa.value
     };
     try {
-        const respuesta = await fetch(`${API_URL}/verificaciones/FormSegundaEtapa`, {
+        const respuesta = await fetch(`${API_URL}/verificaciones/SegundaEtapa`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(datosSegundaEtapa)
@@ -391,7 +391,7 @@ ButtonRegistrarTerceraEtapa.addEventListener("click", async (e) => {
         Orden: OrdenTerceraEtapa.value
     };
     try {
-        const respuesta = await fetch(`${API_URL}/verificaciones/FormTerceraEtapa`, {
+        const respuesta = await fetch(`${API_URL}/verificaciones/TerceraEtapa`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(datosTerceraEtapa)
