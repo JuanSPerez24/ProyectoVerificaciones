@@ -41,19 +41,19 @@ const NumeroDocumentoTerceraEtapa = document.getElementById("InputNumeroDocument
 const DescripcionTerceraEtapa = document.getElementById("InputDescripcionTerceraEtapa");
 
 //Etapas formularios
-const PrimeraEtapa = document.getElementById("RadioPrimeraEtapa");
-const SegundaEtapa = document.getElementById("RadioSegundaEtapa");
-const TerceraEtapa = document.getElementById("RadioTerceraEtapa");
+const FormPrimeraEtapa = document.getElementById("RadioPrimeraEtapa");
+const FormSegundaEtapa = document.getElementById("RadioSegundaEtapa");
+const FormTerceraEtapa = document.getElementById("RadioTerceraEtapa");
 
 //Constantes campos primera seguna y tercera etapa
-const CamposPrimeraEtapa = [Fecha, Hogar, Orden, TipoDocumento, NumeroDocumento, Celular, Correo, Informador, PuntoAtencion, Codigo, SelectTipologia1, SelectTipologia2, SelectTipologia3, DescripcionPrimeraEtapa];
+const CamposPrimeraEtapa = [Fecha, Hogar, Orden, TipoDocumento, NumeroDocumento, Celular, Correo, PuntoAtencion, Codigo, SelectTipologia1, SelectTipologia2, SelectTipologia3, DescripcionPrimeraEtapa];
 const CamposSegundaEtapa = [Levantamiento, FechaSegundaEtapa, DescripcionSegundaEtapa];
-const CamposTerceraEtapa = [DocumentosEnPunto, FechaTerceraEtapa, TramiteRealizado, InformadorTerceraEtapa, IdRespuesta, FichaTerceraEtapa, HogarTerceraEtapa, OrdenTerceraEtapa, TipoDocumentoTerceraEtapa, NumeroDocumentoTerceraEtapa, DescripcionTerceraEtapa];
+const CamposTerceraEtapa = [DocumentosEnPunto, FechaTerceraEtapa, TramiteRealizado, IdRespuesta, FichaTerceraEtapa, HogarTerceraEtapa, OrdenTerceraEtapa, TipoDocumentoTerceraEtapa, NumeroDocumentoTerceraEtapa, DescripcionTerceraEtapa];
 
 //Variables
 let LLenarDatos = [];
 let ArrayDeshabilitar = [];
-let ArrarHabilitar = [];
+let ArrayHabilitar = [];
 let IdSolicitud = null;
 
 //Llenar selects de informadores
@@ -92,10 +92,10 @@ ButtonConsultar.addEventListener("click", async (e) => {
             if (respuesta.status === 404) {
                 alert("No se encontró ninguna solicitud con esa ficha.");
                 Fecha.value = formatearFechaParaInput(new Date());
-                ArrayDeshabilitar.push(SegundaEtapa, TerceraEtapa);
+                ArrayDeshabilitar.push(FormSegundaEtapa, FormTerceraEtapa);
                 DeshabilitarCampos(ArrayDeshabilitar);
-                ArrarHabilitar.push(PrimeraEtapa, ButtonRegistrarPrimeraEtapa);
-                HabilitarCampos(ArrarHabilitar);
+                ArrayHabilitar.push(FormPrimeraEtapa, ButtonRegistrarPrimeraEtapa);
+                HabilitarCampos(ArrayHabilitar);
             } else {
                 alert("Error al realizar la búsqueda.");
             }
@@ -117,19 +117,19 @@ ButtonConsultar.addEventListener("click", async (e) => {
             LLenarDatos = [CamposPrimeraEtapa, ValoresPrimeraEtapa];
             LlenarCampos(LLenarDatos);
 
-            //Si es admin se habilia la segund etapa para que realice el registro
+            //Si es admin se habilia la segunda etapa para que realice el registro
             if (usuario.Rol === 1) {
-                ArrayDeshabilitar.push(CamposPrimeraEtapa, TerceraEtapa, Ficha, ButtonRegistrarPrimeraEtapa);
+                ArrayDeshabilitar.push(CamposPrimeraEtapa,FormSegundaEtapa, FormTerceraEtapa, Ficha, ButtonRegistrarPrimeraEtapa);
                 DeshabilitarCampos(ArrayDeshabilitar);
-                ArrarHabilitar.push(ButtonRegistarSegundaEtapa);
-                HabilitarCampos(ArrarHabilitar);
+                ArrayHabilitar.push(ButtonRegistarSegundaEtapa);
+                HabilitarCampos(ArrayHabilitar);
                 FechaSegundaEtapa.value = formatearFechaParaInput(new Date());
                 alert("La solicitud se encuentra pendiente de respuesta.");
                 return;
             }
 
             //Si NO es admin no se muestra la segunda etapa
-            ArrayDeshabilitar.push(CamposPrimeraEtapa, SegundaEtapa, TerceraEtapa, Ficha, ButtonRegistrarPrimeraEtapa);
+            ArrayDeshabilitar.push(CamposPrimeraEtapa, FormSegundaEtapa, FormTerceraEtapa, Ficha, ButtonRegistrarPrimeraEtapa);
             DeshabilitarCampos(ArrayDeshabilitar);
             alert("La solicitud se encuentra pendiente de respuesta.");
             return;
@@ -138,25 +138,40 @@ ButtonConsultar.addEventListener("click", async (e) => {
 
         //Solo segunda etapa
         if (registro.FechaSegundaEtapa && !registro.FechaTerceraEtapa) {
-            LLenarDatos = [CamposPrimeraEtapa, ValoresPrimeraEtapa];
-            LlenarCampos(LLenarDatos);
 
-            LLenarDatos = [CamposSegundaEtapa, ValoresSegundaEtapa];
-            LlenarCampos(LLenarDatos);
 
             if (registro.Levantamiento === "0" || registro.Levantamiento === 0) {
                 alert("La solicitud no requiere tercera etapa, proceso finalizado.");
-                ArrayDeshabilitar.push(CamposPrimeraEtapa, TerceraEtapa, Ficha, CamposSegundaEtapa, ButtonRegistrarPrimeraEtapa);
+
+
+                const RegistrarOtraSolicitud = confirm("Desea registrar una nueva solicitud con esta ficha.");
+
+                if (RegistrarOtraSolicitud){
+                    ArrayDeshabilitar.push(CamposSegundaEtapa, CamposTerceraEtapa, Ficha, FormSegundaEtapa, FormTerceraEtapa, ButtonRegistrarTerceraEtapa);
+                    DeshabilitarCampos(ArrayDeshabilitar);
+                    ArrayHabilitar.push(CamposPrimeraEtapa, ButtonRegistrarPrimeraEtapa);
+                    HabilitarCampos(ArrayHabilitar);
+
+                    return;
+                };
+
+                LLenarDatos = [CamposPrimeraEtapa, ValoresPrimeraEtapa];
+                LlenarCampos(LLenarDatos);
+
+                LLenarDatos = [CamposSegundaEtapa, ValoresSegundaEtapa];
+                LlenarCampos(LLenarDatos);
+
+                ArrayDeshabilitar.push(CamposPrimeraEtapa, FormTerceraEtapa, Ficha, CamposSegundaEtapa, ButtonRegistrarPrimeraEtapa);
                 DeshabilitarCampos(ArrayDeshabilitar);
-                ArrarHabilitar.push(SegundaEtapa);
-                HabilitarCampos(ArrarHabilitar);
+                ArrayHabilitar.push(FormSegundaEtapa);
+                HabilitarCampos(ArrayHabilitar);
                 return;
             }
 
             ArrayDeshabilitar.push(CamposPrimeraEtapa, CamposSegundaEtapa, Ficha, ButtonRegistrarPrimeraEtapa);
             DeshabilitarCampos(ArrayDeshabilitar);
-            ArrarHabilitar.push(SegundaEtapa, TerceraEtapa, ButtonRegistrarTerceraEtapa, CamposTerceraEtapa);
-            HabilitarCampos(ArrarHabilitar);
+            ArrayHabilitar.push(FormSegundaEtapa, FormTerceraEtapa, ButtonRegistrarTerceraEtapa, CamposTerceraEtapa);
+            HabilitarCampos(ArrayHabilitar);
 
             FechaTerceraEtapa.value = formatearFechaParaInput(new Date());
 
@@ -170,23 +185,39 @@ ButtonConsultar.addEventListener("click", async (e) => {
 
             const VerDatos = confirm("La solicitud ya cuenta con las tres etapas registradas, ¿desea ver los datos?");
 
-            if (!VerDatos) {
+
+            
+            if (VerDatos) {
+                ArrayDeshabilitar.push(CamposPrimeraEtapa, CamposSegundaEtapa, CamposTerceraEtapa, Ficha, ButtonRegistrarPrimeraEtapa, ButtonRegistrarTerceraEtapa);
+                DeshabilitarCampos(ArrayDeshabilitar);
+                ArrayHabilitar.push(FormPrimeraEtapa, FormSegundaEtapa, FormTerceraEtapa);
+                HabilitarCampos(ArrayHabilitar);
+                LLenarDatos = [CamposPrimeraEtapa, ValoresPrimeraEtapa];
+                LlenarCampos(LLenarDatos);
+
+                LLenarDatos = [CamposSegundaEtapa, ValoresSegundaEtapa];
+                LlenarCampos(LLenarDatos);
+
+                LLenarDatos = [CamposTerceraEtapa, ValoresTerceraEtapa];
+                LlenarCampos(LLenarDatos);
                 return;
             }
-            LLenarDatos = [CamposPrimeraEtapa, ValoresPrimeraEtapa];
-            LlenarCampos(LLenarDatos);
 
-            LLenarDatos = [CamposSegundaEtapa, ValoresSegundaEtapa];
-            LlenarCampos(LLenarDatos);
+            const RegistrarOtraSolicitud = confirm("Desea registrar una nueva solicitud con esta ficha.");
 
-            LLenarDatos = [CamposTerceraEtapa, ValoresTerceraEtapa];
-            LlenarCampos(LLenarDatos);
+            if (RegistrarOtraSolicitud){
+                ArrayDeshabilitar.push(CamposSegundaEtapa, CamposTerceraEtapa, Ficha, FormSegundaEtapa, FormTerceraEtapa, ButtonRegistrarTerceraEtapa);
+                DeshabilitarCampos(ArrayDeshabilitar);
+                ArrayHabilitar.push(CamposPrimeraEtapa, ButtonRegistrarPrimeraEtapa);
+                HabilitarCampos(ArrayHabilitar);
 
-            ArrayDeshabilitar.push(CamposPrimeraEtapa, CamposSegundaEtapa, CamposTerceraEtapa, Ficha, ButtonRegistrarPrimeraEtapa, ButtonRegistrarTerceraEtapa);
+                return;
+            };
+            
+            ArrayDeshabilitar.push(FormPrimeraEtapa,FormSegundaEtapa, FormTerceraEtapa, CamposPrimeraEtapa, CamposSegundaEtapa, CamposTerceraEtapa, Ficha, ButtonRegistrarPrimeraEtapa, ButtonRegistrarTerceraEtapa);
             DeshabilitarCampos(ArrayDeshabilitar);
-            ArrarHabilitar.push(PrimeraEtapa, SegundaEtapa, TerceraEtapa);
-            HabilitarCampos(ArrarHabilitar);
             return;
+
         }
 
     } catch (error) {
@@ -282,7 +313,7 @@ ButtonRegistrarPrimeraEtapa.addEventListener("click", async (e) => {
         if (respuesta.ok) {
             alert("Primera etapa registrada con éxito.");
 
-            ArrayDeshabilitar.push(CamposPrimeraEtapa, Ficha, ButtonRegistrarPrimeraEtapa, SegundaEtapa, TerceraEtapa);
+            ArrayDeshabilitar.push(CamposPrimeraEtapa, Ficha, ButtonRegistrarPrimeraEtapa, FormSegundaEtapa, FormTerceraEtapa);
             DeshabilitarCampos(ArrayDeshabilitar);
 
             return;
@@ -295,6 +326,7 @@ ButtonRegistrarPrimeraEtapa.addEventListener("click", async (e) => {
     }
 });
 
+//Registro Segunda Etapa
 ButtonRegistarSegundaEtapa.addEventListener("click", async (e) => {
     e.preventDefault();
     for (let i = 0; i < CamposSegundaEtapa.length; i++) {
@@ -310,7 +342,7 @@ ButtonRegistarSegundaEtapa.addEventListener("click", async (e) => {
         DescripcionSegundaEtapa: DescripcionSegundaEtapa.value
     };
     try {
-        const respuesta = await fetch(`${API_URL}/verificaciones/SegundaEtapa`, {
+        const respuesta = await fetch(`${API_URL}/verificaciones/FormSegundaEtapa`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(datosSegundaEtapa)
@@ -359,7 +391,7 @@ ButtonRegistrarTerceraEtapa.addEventListener("click", async (e) => {
         Orden: OrdenTerceraEtapa.value
     };
     try {
-        const respuesta = await fetch(`${API_URL}/verificaciones/TerceraEtapa`, {
+        const respuesta = await fetch(`${API_URL}/verificaciones/FormTerceraEtapa`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(datosTerceraEtapa)
