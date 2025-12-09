@@ -2,12 +2,12 @@ import express from "express";
 import cors from "cors";
 import path from "path";
 import { fileURLToPath } from "url";
-import db from "./db.js";
 import BusquedaPorTextoYEstado from "./routes/BusquedaPorTextoYEstado.js";
 import DetalladoSolictud  from "./routes/DetalladoSolictud.js";
 import ListasDesplegables  from "./routes/ListasDesplegables.js";
 import Login  from "./routes/Login.js";
 import UsuariosModificacionYRegistro from "./routes/UsuariosModificacionYRegistro.js";
+import health from "./routes/health.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -20,6 +20,15 @@ app.use(cors());
 
 // Servir archivos estáticos del Frontend
 app.use(express.static(path.join(__dirname, "../Frontend")));
+
+// Registro global de errores y excepciones para diagnosticar errores 500 en producción
+process.on('uncaughtException', (err) => {
+  console.error('Uncaught Exception:', err);
+});
+
+process.on('unhandledRejection', (reason) => {
+  console.error('Unhandled Rejection:', reason);
+});
 
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, "../Frontend/index.html"));
@@ -42,6 +51,7 @@ app.use("/api", DetalladoSolictud);
 app.use("/api", ListasDesplegables);
 app.use("/api", Login);
 app.use("/api", UsuariosModificacionYRegistro);
+app.use("/api", health);
 
 //Dar el link del localhost
 app.listen(PORT, () => {
