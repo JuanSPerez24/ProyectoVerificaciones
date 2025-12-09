@@ -119,9 +119,9 @@ ButtonConsultar.addEventListener("click", async (e) => {
 
             //Si es admin se habilia la segunda etapa para que realice el registro
             if (usuario.Rol === 1) {
-                ArrayDeshabilitar.push(CamposPrimeraEtapa,FormSegundaEtapa, FormTerceraEtapa, Ficha, ButtonRegistrarPrimeraEtapa);
+                ArrayDeshabilitar.push(CamposPrimeraEtapa, FormTerceraEtapa, Ficha, ButtonRegistrarPrimeraEtapa);
                 DeshabilitarCampos(ArrayDeshabilitar);
-                ArrayHabilitar.push(ButtonRegistarSegundaEtapa);
+                ArrayHabilitar.push(ButtonRegistarSegundaEtapa, FormSegundaEtapa);
                 HabilitarCampos(ArrayHabilitar);
                 FechaSegundaEtapa.value = formatearFechaParaInput(new Date());
                 alert("La solicitud se encuentra pendiente de respuesta.");
