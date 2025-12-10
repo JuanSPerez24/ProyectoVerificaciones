@@ -179,12 +179,20 @@ router.put("/verificaciones/TerceraEtapa", (req, res) => {
         TipoDocumentoId, NumeroDocumentoSolicitante, Correo, Celular, Hogar, Orden, IdSolicitud
     } = req.body;
 
+    // Validación básica obligatoria (IdRespuesta y FichaTerceraEtapa son opcionales en el flujo reducido)
     if (
-        !FechaTerceraEtapa || !DocumentosEnPunto || !TramiteId || !InformadorTerceraEtapaId ||
-        !IdRespuesta || !FichaTerceraEtapa || !DescripcionTerceraEtapa ||
-        !TipoDocumentoId || !NumeroDocumentoSolicitante || !Hogar || !Orden || !IdSolicitud
+        !FechaTerceraEtapa || !DocumentosEnPunto || !TramiteId || !InformadorTerceraEtapaId 
     )
         return res.status(400).json({ error: "Faltan campos obligatorios de la tercera etapa" });
+
+    // Determinar si se deben requerir datos del solicitante (cuando el frontend mostró el bloque)
+    const requiereSolicitante = String(DocumentosEnPunto) === "1" && String(TramiteId) === "1";
+
+    if (requiereSolicitante) {
+        if (!TipoDocumentoId || !NumeroDocumentoSolicitante || !Hogar || !Orden || !IdSolicitud) {
+            return res.status(400).json({ error: "Faltan campos obligatorios del solicitante para la tercera etapa" });
+        }
+    }
 
     const CorreoFinal = Correo && Correo.trim() !== "" ? Correo : null;
     const CelularFinal = Celular && Celular.trim() !== "" ? Celular : null;
@@ -192,50 +200,103 @@ router.put("/verificaciones/TerceraEtapa", (req, res) => {
     db.beginTransaction((err) => {
         if (err) return res.status(500).json({ error: "Error al iniciar la transacción" });
 
-        const sqlSolicitante = `
-            INSERT INTO datossolicitantes (TipoDocumentoId, NumeroDocumento, Correo, Celular, Hogar, Orden) 
-            VALUES (?, ?, ?, ?, ?, ?)
-            ON DUPLICATE KEY UPDATE IdSolicitante = LAST_INSERT_ID(IdSolicitante)
-        `;
+        // Si se requiere crear/usar solicitante, insertarlo; si no, usar NULL
+        if (requiereSolicitante) {
+            const sqlSolicitante = `
+                INSERT INTO datossolicitantes (TipoDocumentoId, NumeroDocumento, Correo, Celular, Hogar, Orden) 
+                VALUES (?, ?, ?, ?, ?, ?)
+                ON DUPLICATE KEY UPDATE IdSolicitante = LAST_INSERT_ID(IdSolicitante)
+            `;
 
-        db.query(sqlSolicitante, [TipoDocumentoId, NumeroDocumentoSolicitante, CorreoFinal, CelularFinal, Hogar, Orden], (err, resSolicitante) => {
-            if (err) {
-                return db.rollback(() => {
-                    res.status(500).json({ error: "Error en la cosulta o inserción de ddatos del solictante" });
-                });
-            };
+            db.query(sqlSolicitante, [TipoDocumentoId, NumeroDocumentoSolicitante, CorreoFinal, CelularFinal, Hogar, Orden], (err, resSolicitante) => {
+                if (err) {
+                    return db.rollback(() => {
+                        res.status(500).json({ error: "Error en la consulta o inserción de datos del solicitante" });
+                    });
+                }
 
-            const SolicitanteTerceraEtapaId = resSolicitante.insertId;
+                const SolicitanteTerceraEtapaId = resSolicitante.insertId || null;
 
+                        const sqlTerceraEtapa = `
+                            UPDATE solicitudes
+                            SET FechaTerceraEtapa = ?, DocumentosEnPunto = ?, TramiteId = ?, InformadorTerceraEtapaId = ?,
+                                IdRespuesta = ?, FichaTerceraEtapa = ?, SolicitanteTerceraEtapaId = ?, DescripcionTerceraEtapa = ?
+                            WHERE IdSolicitud = ?;
+                        `;
+
+                        db.query(
+                            sqlTerceraEtapa,
+                            [FechaTerceraEtapa, DocumentosEnPunto, TramiteId, InformadorTerceraEtapaId, IdRespuesta || null, FichaTerceraEtapa || null, SolicitanteTerceraEtapaId, DescripcionTerceraEtapa, IdSolicitud],
+                    (err, resSolTerceraEtapa) => {
+                        if (err) {
+                            return db.rollback(() => {
+                                res.status(500).json({ error: "Error en la actualizacion de datos:", err });
+                            });
+                        }
+
+                        if (resSolTerceraEtapa.affectedRows == 0) {
+                            return db.rollback(() => {
+                                res.status(404).json({ error: "Ficha no encontrada" });
+                            });
+                        }
+
+                        db.commit((err) => {
+                            if (err) {
+                                return db.rollback(() => {
+                                    res.status(500).json({ error: "Error en la confirmación de la transacción" });
+                                });
+                            }
+
+                            res.json({
+                                mensaje: "Tercera Etapa actualizada con exito",
+                                solicitudActualizada: {
+                                    IdSolicitud,
+                                    FechaTerceraEtapa,
+                                    DocumentosEnPunto,
+                                    TramiteId,
+                                    InformadorTerceraEtapaId,
+                                    IdRespuesta,
+                                    FichaTerceraEtapa,
+                                    SolicitanteTerceraEtapaId,
+                                    DescripcionTerceraEtapa
+                                }
+                            }
+                            );
+                        });
+                    });
+            });
+        } else {
+            // No se requiere solicitante: actualizar solo la solicitud con SolicitanteTerceraEtapaId = NULL
+            // Flujo reducido: solo actualizar los campos mínimos (no se registran IdRespuesta ni FichaTerceraEtapa)
             const sqlTerceraEtapa = `
                 UPDATE solicitudes
                 SET FechaTerceraEtapa = ?, DocumentosEnPunto = ?, TramiteId = ?, InformadorTerceraEtapaId = ?,
-                    IdRespuesta = ?, FichaTerceraEtapa = ?, SolicitanteTerceraEtapaId = ?, DescripcionTerceraEtapa = ?
+                    SolicitanteTerceraEtapaId = NULL, DescripcionTerceraEtapa = ?
                 WHERE IdSolicitud = ?;
             `;
 
             db.query(
                 sqlTerceraEtapa,
-                [FechaTerceraEtapa, DocumentosEnPunto, TramiteId, InformadorTerceraEtapaId, IdRespuesta, FichaTerceraEtapa, SolicitanteTerceraEtapaId, DescripcionTerceraEtapa, IdSolicitud],
+                [FechaTerceraEtapa, DocumentosEnPunto, TramiteId, InformadorTerceraEtapaId, DescripcionTerceraEtapa, IdSolicitud],
                 (err, resSolTerceraEtapa) => {
                     if (err) {
                         return db.rollback(() => {
                             res.status(500).json({ error: "Error en la actualizacion de datos:", err });
                         });
-                    };
+                    }
 
                     if (resSolTerceraEtapa.affectedRows == 0) {
                         return db.rollback(() => {
                             res.status(404).json({ error: "Ficha no encontrada" });
                         });
-                    };
+                    }
 
                     db.commit((err) => {
                         if (err) {
                             return db.rollback(() => {
                                 res.status(500).json({ error: "Error en la confirmación de la transacción" });
                             });
-                        };
+                        }
 
                         res.json({
                             mensaje: "Tercera Etapa actualizada con exito",
@@ -247,14 +308,14 @@ router.put("/verificaciones/TerceraEtapa", (req, res) => {
                                 InformadorTerceraEtapaId,
                                 IdRespuesta,
                                 FichaTerceraEtapa,
-                                SolicitanteTerceraEtapaId,
+                                SolicitanteTerceraEtapaId: null,
                                 DescripcionTerceraEtapa
                             }
-                        }
-                        );
+                        });
                     });
-                });
-        });
+                }
+            );
+        }
     });
 });
 

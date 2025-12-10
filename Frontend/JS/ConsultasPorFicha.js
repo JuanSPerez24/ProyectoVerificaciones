@@ -27,6 +27,9 @@ const Levantamiento = document.getElementById("SelectRespuestaLevantamiento");
 const FechaSegundaEtapa = document.getElementById("InputFechaSegundaEtapa");
 const DescripcionSegundaEtapa = document.getElementById("InputDescripcionSegundaEtapa");
 
+//Parte formulario tercera etapa
+const DatosFormSolicitanteTerceraEtapa = document.getElementById("DatosSolicitudTerceraEtapa");
+
 //Campos tercera etapa
 const DocumentosEnPunto = document.getElementById("SelectDocumentosEnPunto");
 const FechaTerceraEtapa = document.getElementById("InputFechaTerceraEtapa");
@@ -137,7 +140,7 @@ ButtonConsultar.addEventListener("click", async (e) => {
         };
 
         //Solo segunda etapa
-        if (registro.FechaSegundaEtapa && !registro.FechaTerceraEtapa) {
+        if (registro.FechaSegundaEtapa && String(registro.TramiteId) !== "2") {
 
 
             if (registro.Levantamiento === "0" || registro.Levantamiento === 0) {
@@ -161,13 +164,23 @@ ButtonConsultar.addEventListener("click", async (e) => {
                     
                     LLenarDatos = [CamposSegundaEtapa, ValoresSegundaEtapa];
                     LlenarCampos(LLenarDatos);
+
                 }
+                //Si no se quire ver informacion
                 ArrayDeshabilitar.push(CamposPrimeraEtapa, FormTerceraEtapa, Ficha, CamposSegundaEtapa, ButtonRegistrarPrimeraEtapa);
                 DeshabilitarCampos(ArrayDeshabilitar);
                 ArrayHabilitar.push(FormSegundaEtapa);
                 HabilitarCampos(ArrayHabilitar);
                 return;
             }
+
+            alert("Registro de segunda etapa completo, registrar tercera etapa.");
+
+            LLenarDatos = [CamposPrimeraEtapa, ValoresPrimeraEtapa];
+            LlenarCampos(LLenarDatos);
+            
+            LLenarDatos = [CamposSegundaEtapa, ValoresSegundaEtapa];
+            LlenarCampos(LLenarDatos);
 
             ArrayDeshabilitar.push(CamposPrimeraEtapa, CamposSegundaEtapa, Ficha, ButtonRegistrarPrimeraEtapa);
             DeshabilitarCampos(ArrayDeshabilitar);
@@ -176,18 +189,36 @@ ButtonConsultar.addEventListener("click", async (e) => {
 
             FechaTerceraEtapa.value = formatearFechaParaInput(new Date());
 
-            alert("Registro de segunda etapa completo, registrar tercera etapa.");
 
-            return;
         }
 
         //Tercera etapa completa
         if (registro.FechaTerceraEtapa) {
 
+            const esTramiteDos = String(registro.TramiteId) === "2";
+
+            if(esTramiteDos){
+                alert('A la solicitud aún le faltan datos para teminar la tercera etapa.')
+
+                ArrayDeshabilitar.push(CamposPrimeraEtapa, CamposSegundaEtapa, Ficha, ButtonRegistrarPrimeraEtapa);
+                DeshabilitarCampos(ArrayDeshabilitar);
+
+                ArrayHabilitar.push(FormPrimeraEtapa, FormSegundaEtapa, FormTerceraEtapa, ButtonRegistrarTerceraEtapa);
+                HabilitarCampos(ArrayHabilitar);
+
+                LLenarDatos = [CamposPrimeraEtapa, ValoresPrimeraEtapa];
+                LlenarCampos(LLenarDatos);
+
+                LLenarDatos = [CamposSegundaEtapa, ValoresSegundaEtapa];
+                LlenarCampos(LLenarDatos);
+
+                LLenarDatos = [CamposTerceraEtapa, ValoresTerceraEtapa];
+                LlenarCampos(LLenarDatos);
+                return;
+            }
+
             const VerDatos = confirm("La solicitud ya cuenta con las tres etapas registradas, ¿desea ver los datos?");
 
-
-            
             if (VerDatos) {
                 ArrayDeshabilitar.push(CamposPrimeraEtapa, CamposSegundaEtapa, CamposTerceraEtapa, Ficha, ButtonRegistrarPrimeraEtapa, ButtonRegistrarTerceraEtapa);
                 DeshabilitarCampos(ArrayDeshabilitar);
@@ -215,7 +246,7 @@ ButtonConsultar.addEventListener("click", async (e) => {
                 return;
             };
             
-            ArrayDeshabilitar.push(FormPrimeraEtapa,FormSegundaEtapa, FormTerceraEtapa, CamposPrimeraEtapa, CamposSegundaEtapa, CamposTerceraEtapa, Ficha, ButtonRegistrarPrimeraEtapa, ButtonRegistrarTerceraEtapa);
+            ArrayDeshabilitar.push(FormSegundaEtapa, FormTerceraEtapa, CamposPrimeraEtapa, CamposSegundaEtapa, CamposTerceraEtapa, Ficha, ButtonRegistrarPrimeraEtapa, ButtonRegistrarTerceraEtapa);
             DeshabilitarCampos(ArrayDeshabilitar);
             return;
 
@@ -366,12 +397,49 @@ ButtonRegistarSegundaEtapa.addEventListener("click", async (e) => {
     }
 });
 
+//Mostrar o no en la tercera eatapa los datos del solicitante
+function RegistrarTerceraEtapaCompleta() {
+    if (!DatosFormSolicitanteTerceraEtapa) return;
+
+    // Asegurarse de comparar los valores como cadenas (los <select> devuelven strings)
+    const docVal = String(DocumentosEnPunto.value);
+    const tramVal = String(TramiteRealizado.value);
+
+    if (docVal === "1" && tramVal === "1") {
+        DatosFormSolicitanteTerceraEtapa.style.display = "block";
+    } else {
+        DatosFormSolicitanteTerceraEtapa.style.display = "none";
+    }
+}
+
+// Añadir listeners a ambos selects por separado
+DocumentosEnPunto.addEventListener("change", RegistrarTerceraEtapaCompleta);
+TramiteRealizado.addEventListener("change", RegistrarTerceraEtapaCompleta);
+
+// Sincronizar estado al cargar
+RegistrarTerceraEtapaCompleta();
+
 //Registro Tercera Etapa
 ButtonRegistrarTerceraEtapa.addEventListener("click", async (e) => {
     e.preventDefault();
-    //Validacion campos obligatorios
-    for (let i = 0; i < CamposTerceraEtapa.length; i++) {
-        if (!CamposTerceraEtapa[i].value) {
+    // Validación condicional según visibilidad del bloque de datos del solicitante
+    if (!IdSolicitud) {
+        alert("No hay una solicitud seleccionada para registrar la tercera etapa.");
+        return;
+    }
+
+    const solicitanteVisible = DatosFormSolicitanteTerceraEtapa && window.getComputedStyle(DatosFormSolicitanteTerceraEtapa).display !== "none";
+
+    let camposAValidar = [];
+    if (solicitanteVisible) {
+        camposAValidar = CamposTerceraEtapa; // validar todos los campos
+    } else {
+        // validar solo los campos que están visibles cuando el bloque de solicitante está oculto
+        camposAValidar = [DocumentosEnPunto, FechaTerceraEtapa, TramiteRealizado, InformadorTerceraEtapa, DescripcionTerceraEtapa];
+    }
+
+    for (let i = 0; i < camposAValidar.length; i++) {
+        if (!camposAValidar[i].value) {
             alert("Por favor complete todos los campos obligatorios de la tercera etapa.");
             return;
         }
@@ -386,10 +454,10 @@ ButtonRegistrarTerceraEtapa.addEventListener("click", async (e) => {
         IdRespuesta: IdRespuesta.value.trim(),
         FichaTerceraEtapa: FichaTerceraEtapa.value.trim(),
         DescripcionTerceraEtapa: DescripcionTerceraEtapa.value.trim(),
-        TipoDocumentoId: TipoDocumentoTerceraEtapa.value,
-        NumeroDocumentoSolicitante: NumeroDocumentoTerceraEtapa.value.trim(),
-        Hogar: HogarTerceraEtapa.value,
-        Orden: OrdenTerceraEtapa.value
+        TipoDocumentoId: solicitanteVisible ? TipoDocumentoTerceraEtapa.value : null,
+        NumeroDocumentoSolicitante: solicitanteVisible ? NumeroDocumentoTerceraEtapa.value.trim() : null,
+        Hogar: solicitanteVisible ? HogarTerceraEtapa.value : null,
+        Orden: solicitanteVisible ? OrdenTerceraEtapa.value : null
     };
     try {
         const respuesta = await fetch(`${API_URL}/verificaciones/TerceraEtapa`, {
