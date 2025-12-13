@@ -11,13 +11,19 @@
   "engines": {
     "node": "18.x"
   },
-  "keywords": ["verificaciones", "marcas", "solicitudes"],
+  "keywords": [
+    "verificaciones",
+    "marcas",
+    "solicitudes"
+  ],
   "author": "JuanSPerez24",
   "license": "MIT",
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
-    "mysql2": "^3.15.3"
+    "jest": "^30.2.0",
+    "mysql2": "^3.15.3",
+    "supertest": "^7.1.4"
   }
 }
