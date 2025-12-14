@@ -11,9 +11,11 @@ document.addEventListener("DOMContentLoaded", (e) => {
 
     if (usuario.Rol === 1) {
         VerUsuario.innerHTML += `
+        <li class="nav-item">
             <a class="nav-link" href="/HTML/Usuarios.html" id="">
-              Usuarios
+            Usuarios
             </a>
+        </li>
         `;
     }
 
